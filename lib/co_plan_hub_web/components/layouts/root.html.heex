@@ -7,11 +7,51 @@
     <.live_title suffix=" · Phoenix Framework">
       <%= assigns[:page_title] || "CoPlanHub" %>
     </.live_title>
-    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
   </head>
+  
   <body class="bg-slate-100 dark:bg-slate-800 antialiased">
-    <%= @inner_content %>
+    <.header class="px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
+        <a href="/">
+          <img src={~p"/images/logo.png"} class="w-52" />
+        </a>
+        
+        <ul class="flex items-center gap-4 font-semibold leading-5 text-base text-slate-900 dark:text-slate-200">
+          <%= if @current_user do %>
+            <li>
+              <%= @current_user.email %>
+            </li>
+            
+            <li>
+              <.link href={~p"/users/settings"}>
+                Settings
+              </.link>
+            </li>
+            
+            <li>
+              <.link href={~p"/users/log_out"} method="delete">
+                Log out
+              </.link>
+            </li>
+          <% else %>
+            <li>
+              <.link href={~p"/users/register"}>
+                Register
+              </.link>
+            </li>
+            
+            <li>
+              <.link href={~p"/users/log_in"}>
+                Log in
+              </.link>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </.header>
+     <.flash_group flash={@flash} /> <%= @inner_content %>
   </body>
 </html>
