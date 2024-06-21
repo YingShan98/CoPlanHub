@@ -8,7 +8,7 @@ defmodule CoPlanHubWeb.UserLoginLive do
         Log in to account
         <:subtitle>
           Don't have an account?
-          <.link navigate={~p"/users/register"} class="font-semibold text-sky-600 hover:underline hover:text-sky-400">
+          <.link navigate={~p"/users/register"} class="font-semibold text-sky-600 hover:underline">
             Sign up
           </.link>
           for an account now.

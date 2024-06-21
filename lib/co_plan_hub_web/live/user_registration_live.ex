@@ -13,7 +13,7 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
           Already registered?
           <.link
             navigate={~p"/users/log_in"}
-            class="font-semibold text-sky-600 hover:underline hover:text-sky-400"
+            class="font-semibold text-sky-600 hover:underline"
           >
             Log in
           </.link>
