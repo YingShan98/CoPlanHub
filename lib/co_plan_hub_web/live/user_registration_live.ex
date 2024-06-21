@@ -11,7 +11,10 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
         Register for an account
         <:subtitle>
           Already registered?
-          <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
+          <.link
+            navigate={~p"/users/log_in"}
+            class="font-semibold text-sky-600 hover:underline hover:text-sky-400"
+          >
             Log in
           </.link>
           to your account now.
@@ -30,12 +33,15 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
         <.error :if={@check_errors}>
           Oops, something went wrong! Please check the errors below.
         </.error>
-
-        <.input field={@form[:email]} type="email" label="Email" required />
+         <.input field={@form[:email]} type="email" label="Email" required />
         <.input field={@form[:password]} type="password" label="Password" required />
-
         <:actions>
-          <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
+          <.button
+            phx-disable-with="Creating account..."
+            class="w-full bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
+          >
+            Create an account
+          </.button>
         </:actions>
       </.simple_form>
     </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="[scrollbar-gutter:stable]">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,14 +12,14 @@
     </script>
   </head>
   
-  <body class="bg-slate-100 dark:bg-slate-800 antialiased">
-    <.header class="px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
+  <body class="bg-slate-100 dark:bg-slate-700 antialiased">
+    <.header class="px-4 sm:px-6 lg:px-8 bg-slate-200 dark:bg-slate-800">
+      <div class="flex items-center justify-between py-3 text-sm">
         <a href="/">
           <img src={~p"/images/logo.png"} class="w-52" />
         </a>
         
-        <ul class="flex items-center gap-4 font-semibold leading-5 text-base text-slate-900 dark:text-slate-200">
+        <ul class="flex items-center gap-4 font-semibold leading-5 text-base">
           <%= if @current_user do %>
             <li>
               <%= @current_user.email %>
