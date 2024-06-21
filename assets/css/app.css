@@ -3,3 +3,6 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+a:hover {
+    color: rgb(148 163 184 / 1)
+}

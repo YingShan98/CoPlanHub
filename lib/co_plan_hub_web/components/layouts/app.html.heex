@@ -1,4 +1,4 @@
-<header class="px-4 sm:px-6 lg:px-8">
+<.header class="px-4 sm:px-6 lg:px-8">
   <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
     <div class="flex items-center gap-4">
       <a href="/">
@@ -8,22 +8,49 @@
         v<%= Application.spec(:phoenix, :vsn) %>
       </p>
     </div>
-    <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
-      <a href="https://twitter.com/elixirphoenix" class="hover:text-zinc-700">
-        @elixirphoenix
-      </a>
-      <a href="https://github.com/phoenixframework/phoenix" class="hover:text-zinc-700">
-        GitHub
-      </a>
-      <a
-        href="https://hexdocs.pm/phoenix/overview.html"
-        class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80"
-      >
-        Get Started <span aria-hidden="true">&rarr;</span>
-      </a>
-    </div>
+    <ul class="flex items-center gap-4 font-semibold leading-6 text-slate-900 dark:text-slate-200">
+      <%= if @current_user do %>
+        <li class="text-[0.8125rem] leading-6">
+          <%= @current_user.email %>
+        </li>
+        <li>
+          <.link
+            href={~p"/users/settings"}
+            class="text-[0.8125rem] leading-6 font-semibold"
+          >
+            Settings
+          </.link>
+        </li>
+        <li>
+          <.link
+            href={~p"/users/log_out"}
+            method="delete"
+            class="text-[0.8125rem] leading-6 font-semibold"
+          >
+            Log out
+          </.link>
+        </li>
+      <% else %>
+        <li>
+          <.link
+            href={~p"/users/register"}
+            class="text-[0.8125rem] leading-6 font-semibold"
+          >
+            Register
+          </.link>
+        </li>
+        <li>
+          <.link
+            href={~p"/users/log_in"}
+            class="text-[0.8125rem] leading-6 font-semibold"
+          >
+            Log in
+          </.link>
+        </li>
+      <% end %>
+    </ul>
   </div>
-</header>
+</.header>
 <main class="px-4 py-20 sm:px-6 lg:px-8">
   <div class="mx-auto max-w-2xl">
     <.flash_group flash={@flash} />
