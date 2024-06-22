@@ -3,13 +3,20 @@ defmodule CoPlanHub.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
+    field :guid, Ecto.UUID, autogenerate: true
     field :email, :string
-    field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
-    field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
+    field :username, :string
+    field :first_name, :string
+    field :last_name, :string
+    field :profile_image, :string
 
     timestamps(type: :utc_datetime)
+
+    field :password, :string, virtual: true, redact: true
+    field :password_confirmation, :string, virtual: true, redact: true
+    field :current_password, :string, virtual: true, redact: true
   end
 
   @doc """
