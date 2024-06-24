@@ -6,18 +6,20 @@ defmodule CoPlanHubWeb.UserConfirmationLive do
   def render(%{live_action: :edit} = assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
-      <.header class="text-center">Confirm Account</.header>
+      <.header class="text-center">
+      Activate Account
+       </.header>
 
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
         <:actions>
-          <.button phx-disable-with="Confirming..." class="w-full">Confirm my account</.button>
+          <.button phx-disable-with="Confirming..." class="w-full text-sky-500 hover:underline hover:text-sky-400">Activate my account</.button>
         </:actions>
       </.simple_form>
 
-      <p class="text-center mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
+      <p class="text-center mt-4 text-sky-500">
+        <.link href={~p"/users/register"} class="hover:underline">Register</.link>
+        | <.link href={~p"/users/log_in"} class="hover:underline">Log in</.link>
       </p>
     </div>
     """
@@ -35,8 +37,8 @@ defmodule CoPlanHubWeb.UserConfirmationLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, "User confirmed successfully.")
-         |> redirect(to: ~p"/")}
+         |> put_flash(:info, "User activated successfully.")
+         |> redirect(to: ~p"/users/log_in")}
 
       :error ->
         # If there is a current user and the account was already confirmed,

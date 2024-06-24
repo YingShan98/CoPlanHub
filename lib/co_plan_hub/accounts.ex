@@ -171,7 +171,7 @@ defmodule CoPlanHub.Accounts do
     {encoded_token, user_token} = UserToken.build_email_token(user, "change:#{current_email}")
 
     Repo.insert!(user_token)
-    UserNotifier.deliver_update_email_instructions(user, update_email_url_fun.(encoded_token))
+    UserNotifier.deliver_update_email_instructions(%{user: user, url: update_email_url_fun.(encoded_token)})
   end
 
   @doc """
@@ -263,7 +263,7 @@ defmodule CoPlanHub.Accounts do
     else
       {encoded_token, user_token} = UserToken.build_email_token(user, "confirm")
       Repo.insert!(user_token)
-      UserNotifier.deliver_confirmation_instructions(user, confirmation_url_fun.(encoded_token))
+      UserNotifier.deliver_confirmation_instructions(%{user: user, url: confirmation_url_fun.(encoded_token)})
     end
   end
 

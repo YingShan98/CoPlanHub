@@ -27,7 +27,7 @@ defmodule CoPlanHubWeb.UserLoginLive do
         </:actions>
         <:actions>
           <.button phx-disable-with="Logging in..." class="w-full bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200">
-            Log in <span aria-hidden="true">→</span>
+            Log in
           </.button>
         </:actions>
       </.simple_form>

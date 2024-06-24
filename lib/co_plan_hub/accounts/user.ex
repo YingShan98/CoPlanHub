@@ -46,6 +46,8 @@ defmodule CoPlanHub.Accounts.User do
     user
     |> cast(attrs, [:first_name, :last_name, :username, :email, :password, :password_confirmation])
     |> validate_required([:first_name, :last_name, :username])
+    |> unsafe_validate_unique(:username, CoPlanHub.Repo)
+    |> unique_constraint(:username)
     |> validate_email(opts)
     |> validate_password(opts)
 
