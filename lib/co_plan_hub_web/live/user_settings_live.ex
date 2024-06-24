@@ -99,6 +99,7 @@ defmodule CoPlanHubWeb.UserSettingsLive do
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:trigger_submit, false)
+      |> assign(:page_title, "User Profile")
 
     {:ok, socket}
   end

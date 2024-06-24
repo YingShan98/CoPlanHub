@@ -13,7 +13,7 @@ defmodule CoPlanHubWeb.UserConfirmationLive do
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
         <:actions>
-          <.button phx-disable-with="Confirming..." class="w-full text-sky-500 hover:underline hover:text-sky-400">Activate my account</.button>
+          <.button phx-disable-with="Activating..." class="w-full text-sky-500 hover:underline hover:text-sky-400">Activate my account</.button>
         </:actions>
       </.simple_form>
 
@@ -27,6 +27,9 @@ defmodule CoPlanHubWeb.UserConfirmationLive do
 
   def mount(%{"token" => token}, _session, socket) do
     form = to_form(%{"token" => token}, as: "user")
+    socket =
+      socket
+      |> assign(:page_title, "User Activation")
     {:ok, assign(socket, form: form), temporary_assigns: [form: nil]}
   end
 

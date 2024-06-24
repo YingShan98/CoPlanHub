@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title suffix=" · Phoenix Framework">
+    <.live_title>
       <%= assigns[:page_title] || "CoPlanHub" %>
     </.live_title>
      <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
@@ -14,42 +14,79 @@
   
   <body class="bg-slate-100 dark:bg-slate-700 antialiased">
     <.header class="px-4 sm:px-6 lg:px-8 bg-slate-200 dark:bg-slate-800">
-      <div class="flex items-center justify-between py-3 text-sm">
-        <a href="/">
+      <div class="flex items-center justify-between py-2 text-sm">
+        <.link navigate="/" id="logo">
           <img src={~p"/images/logo.png"} class="w-52" />
-        </a>
+        </.link>
         
-        <ul class="flex items-center gap-4 font-semibold leading-5">
-          <%= if @current_user do %>
-            <li>
-              <%= @current_user.email %>
-            </li>
-            
-            <li>
-              <.link href={~p"/users/settings"}>
-                Settings
-              </.link>
-            </li>
-            
-            <li>
-              <.link href={~p"/users/log_out"} method="delete">
-                Log out
-              </.link>
-            </li>
-          <% else %>
-            <li>
-              <.link href={~p"/users/register"}>
-                Register
-              </.link>
-            </li>
-            
-            <li>
-              <.link href={~p"/users/log_in"}>
-                Log in
-              </.link>
-            </li>
-          <% end %>
-        </ul>
+        <div>
+          <button
+            id="navbar-toggle"
+            data-collapse-toggle="navbar-dropdown"
+            type="button"
+            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden hover:dark:bg-sky-700"
+            aria-controls="navbar-dropdown"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Open main menu</span> <FontAwesome.bars />
+          </button>
+          
+          <div
+            class="hidden w-full absolute rounded-lg right-0 p-2 mt-4 bg-slate-200 dark:bg-slate-800 md:block md:w-auto md:relative md:mt-0"
+            id="navbar-dropdown"
+          >
+            <ul class="flex flex-col items-center gap-4 font-semibold leading-5 md:flex-row md:space-x-4">
+              <li>
+                <.link href={~p"/"}>
+                  Home
+                </.link>
+              </li>
+              
+              <%= if @current_user do %>
+                <li class="flex justify-between gap-2">
+                  <button
+                    id="profile-toggle"
+                    data-dropdown-toggle="profile-dropdown"
+                    type="button"
+                    class="flex items-center justify-between w-full gap-2 py-2 px-3 rounded md:border-0 md:p-0 md:w-auto hover:text-sky-400"
+                    aria-controls="profile-dropdown"
+                    aria-expanded="false"
+                  >
+                    <%= @current_user.username %> <FontAwesome.caret_down class="h-4 w-4" />
+                  </button>
+                  
+                  <div id="profile-dropdown" class="hidden divide-y divide-gray-100 rounded-sm shadow w-full md:w-44 absolute right-0 mt-10 bg-slate-200 dark:bg-slate-900">
+                    <ul class="py-2 px-4 text-sm">
+                      <li class="py-2">
+                        <.link href={~p"/users/settings"}>
+                          Profile
+                        </.link>
+                      </li>
+                      
+                      <li class="py-2">
+                        <.link href={~p"/users/log_out"} method="delete">
+                          Log out
+                        </.link>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              <% else %>
+                <li>
+                  <.link href={~p"/users/register"}>
+                    Register
+                  </.link>
+                </li>
+                
+                <li>
+                  <.link href={~p"/users/log_in"}>
+                    Log in
+                  </.link>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
       </div>
     </.header>
      <.flash_group flash={@flash} /> <%= @inner_content %>

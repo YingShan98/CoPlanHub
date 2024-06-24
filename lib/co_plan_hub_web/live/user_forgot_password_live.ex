@@ -28,6 +28,10 @@ defmodule CoPlanHubWeb.UserForgotPasswordLive do
   end
 
   def mount(_params, _session, socket) do
+    socket =
+      socket
+      |> assign(:page_title, "Forgot Password")
+
     {:ok, assign(socket, form: to_form(%{}, as: "user"))}
   end
 

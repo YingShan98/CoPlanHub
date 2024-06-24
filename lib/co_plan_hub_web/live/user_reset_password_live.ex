@@ -39,7 +39,10 @@ defmodule CoPlanHubWeb.UserResetPasswordLive do
   end
 
   def mount(params, _session, socket) do
-    socket = assign_user_and_token(socket, params)
+    socket =
+      socket
+      |> assign_user_and_token(params)
+      |> assign(:page_title, "Reset Password")
 
     form_source =
       case socket.assigns do

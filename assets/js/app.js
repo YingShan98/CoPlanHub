@@ -42,3 +42,27 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+// Function to toggle the dropdown menu
+function toggleDropdown(buttonId, dropdownId) {
+  const button = document.getElementById(buttonId);
+  const dropdown = document.getElementById(dropdownId);
+
+  if (button && dropdown) {
+    button.addEventListener('click', () => {
+      dropdown.classList.toggle('hidden');
+    });
+
+    // Close the dropdown when clicking outside of it
+    document.addEventListener('click', (event) => {
+      if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+  }
+}
+
+// Initialize the dropdowns
+document.addEventListener('DOMContentLoaded', () => {
+  toggleDropdown('navbar-toggle', 'navbar-dropdown');
+  toggleDropdown('profile-toggle', 'profile-dropdown');
+});
