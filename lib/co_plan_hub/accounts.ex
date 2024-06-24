@@ -96,6 +96,19 @@ defmodule CoPlanHub.Accounts do
   ## Settings
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for changing the user profile.
+
+  ## Examples
+
+      iex> change_user_profile(user)
+      %Ecto.Changeset{data: %User{}}
+
+  """
+  def change_user_profile(user, attrs \\ %{}) do
+    User.profile_changeset(user, attrs)
+  end
+
+  @doc """
   Returns an `%Ecto.Changeset{}` for changing the user email.
 
   ## Examples
@@ -105,7 +118,7 @@ defmodule CoPlanHub.Accounts do
 
   """
   def change_user_email(user, attrs \\ %{}) do
-    User.email_changeset(user, attrs, validate_email: false)
+    User.email_changeset(user, attrs, validate_email: true)
   end
 
   @doc """
@@ -184,7 +197,7 @@ defmodule CoPlanHub.Accounts do
 
   """
   def change_user_password(user, attrs \\ %{}) do
-    User.password_changeset(user, attrs, hash_password: false)
+    User.password_changeset(user, attrs, hash_password: true)
   end
 
   @doc """

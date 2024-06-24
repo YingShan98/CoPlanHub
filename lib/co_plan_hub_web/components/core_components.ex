@@ -40,6 +40,7 @@ defmodule CoPlanHubWeb.CoreComponents do
   attr :show, :boolean, default: false
   attr :on_cancel, JS, default: %JS{}
   slot :inner_block, required: true
+  slot :header
 
   def modal(assigns) do
     ~H"""
@@ -50,7 +51,7 @@ defmodule CoPlanHubWeb.CoreComponents do
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
       class="relative z-50 hidden"
     >
-      <div id={"#{@id}-bg"} class="bg-zinc-50/90 fixed inset-0 transition-opacity" aria-hidden="true" />
+      <div id={"#{@id}-bg"} class="bg-slate-900 fixed inset-0 transition-opacity" aria-hidden="true" />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
@@ -66,18 +67,23 @@ defmodule CoPlanHubWeb.CoreComponents do
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-white p-14 shadow-lg ring-1 transition"
+              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-slate-200 dark:bg-slate-800 p-14 shadow-lg ring-1 transition"
             >
-              <div class="absolute top-6 right-5">
-                <button
-                  phx-click={JS.exec("data-cancel", to: "##{@id}")}
-                  type="button"
-                  class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
-                  aria-label={gettext("close")}
-                >
-                  <.icon name="hero-x-mark-solid" class="h-5 w-5" />
-                </button>
+              <div class="flex justify-between gap-2 text-slate-900 dark:text-sky-50">
+                <div><%= render_slot(@header) %></div>
+
+                <div class="justify-self-end">
+                  <button
+                    phx-click={JS.exec("data-cancel", to: "##{@id}")}
+                    type="button"
+                    class="-m-3 flex-none p-3 opacity-20 hover:opacity-40 dark:opacity-40 dark:hover:opacity-60"
+                    aria-label={gettext("close")}
+                  >
+                    <.icon name="hero-x-mark-solid" class="h-5 w-5" />
+                  </button>
+                </div>
               </div>
+
               <div id={"#{@id}-content"}>
                 <%= render_slot(@inner_block) %>
               </div>
@@ -123,10 +129,11 @@ defmodule CoPlanHubWeb.CoreComponents do
     >
       <p :if={@title} class="flex items-center gap-1.5 text-sm font-semibold leading-6">
         <.icon :if={@kind == :info} name="hero-information-circle-mini" class="h-4 w-4" />
-        <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="h-4 w-4" />
-        <%= @title %>
+        <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="h-4 w-4" /> <%= @title %>
       </p>
+
       <p class="mt-2 text-sm leading-5"><%= msg %></p>
+
       <button type="button" class="group absolute top-1 right-1 p-2" aria-label={gettext("close")}>
         <.icon name="hero-x-mark-solid" class="h-5 w-5 opacity-40 group-hover:opacity-70" />
       </button>
@@ -273,6 +280,7 @@ defmodule CoPlanHubWeb.CoreComponents do
   attr :label, :string, default: nil
   attr :value, :any
   attr :class, :string, default: "w-full"
+  attr :width_class, :string, default: "w-full"
 
   attr :type, :string,
     default: "text",
@@ -310,7 +318,7 @@ defmodule CoPlanHubWeb.CoreComponents do
       end)
 
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class={@width_class}>
       <label class="flex items-center gap-4 text-sm leading-6 text-slate-900 dark:text-sky-50">
         <input type="hidden" name={@name} value="false" />
         <input
@@ -319,11 +327,11 @@ defmodule CoPlanHubWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 focus:ring-0 bg-white dark:bg-slate-800"
+          class="rounded border-zinc-300 focus:ring-0 bg-white dark:bg-slate-800 disabled:bg-slate-300 bg-white disabled:dark:bg-slate-700"
           {@rest}
-        />
-        <%= @label %>
+        /> <%= @label %>
       </label>
+
       <.error :for={msg <- @errors}><%= msg %></.error>
     </div>
     """
@@ -331,18 +339,20 @@ defmodule CoPlanHubWeb.CoreComponents do
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class={@width_class}>
       <.label for={@id}><%= @label %></.label>
+
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm bg-white text-slate-900 dark:bg-slate-800 dark:text-sky-50 autofill:dark:!bg-slate-800 autofill:dark:!text-sky-50"
+        class="mt-2 block w-full rounded-md border border-gray-300 shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm bg-white text-slate-900 dark:bg-slate-800 dark:text-sky-50 autofill:dark:!bg-slate-800 autofill:dark:!text-sky-50 disabled:bg-slate-300 bg-white disabled:dark:bg-slate-700"
         multiple={@multiple}
         {@rest}
       >
         <option :if={@prompt} value=""><%= @prompt %></option>
-        <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
+         <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
       </select>
+
       <.error :for={msg <- @errors}><%= msg %></.error>
     </div>
     """
@@ -350,15 +360,16 @@ defmodule CoPlanHubWeb.CoreComponents do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class={@width_class}>
       <.label for={@id}><%= @label %></.label>
-      <textarea
+       <textarea
         id={@id}
         name={@name}
         class={[
           "mt-2 block rounded-lg focus:ring-0 sm:text-sm sm:leading-6",
           "min-h-[6rem] phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
           "bg-white text-slate-900 dark:bg-slate-800 dark:text-sky-50 autofill:dark:!bg-slate-800 autofill:dark:!text-sky-50",
+          "disabled:bg-slate-300 bg-white disabled:dark:bg-slate-700",
           @class,
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
@@ -373,8 +384,9 @@ defmodule CoPlanHubWeb.CoreComponents do
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class={@width_class}>
       <.label for={@id}><%= @label %></.label>
+
       <input
         type={@type}
         name={@name}
@@ -384,6 +396,7 @@ defmodule CoPlanHubWeb.CoreComponents do
           "mt-2 block rounded-lg focus:ring-0 sm:text-sm sm:leading-6",
           "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
           "bg-white text-slate-900 dark:bg-slate-800 dark:text-sky-50 autofill:dark:!bg-slate-800 autofill:dark:!text-sky-50",
+          "disabled:bg-slate-300 bg-white disabled:dark:bg-slate-700",
           @class,
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
@@ -417,8 +430,9 @@ defmodule CoPlanHubWeb.CoreComponents do
   def error(assigns) do
     ~H"""
     <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-600 phx-no-feedback:hidden">
-      <.icon name="hero-exclamation-circle-mini" class="mt-0.5 h-5 w-5 flex-none" />
-      <%= render_slot(@inner_block) %>
+      <.icon name="hero-exclamation-circle-mini" class="mt-0.5 h-5 w-5 flex-none" /> <%= render_slot(
+        @inner_block
+      ) %>
     </p>
     """
   end
@@ -439,10 +453,12 @@ defmodule CoPlanHubWeb.CoreComponents do
         <h1 class="text-lg font-bold leading-8 text-slate-900 dark:text-sky-50">
           <%= render_slot(@inner_block) %>
         </h1>
+
         <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-200">
           <%= render_slot(@subtitle) %>
         </p>
       </div>
+
       <div class="flex-none"><%= render_slot(@actions) %></div>
     </header>
     """
@@ -485,11 +501,13 @@ defmodule CoPlanHubWeb.CoreComponents do
         <thead class="text-sm text-left leading-6">
           <tr>
             <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal"><%= col[:label] %></th>
+
             <th :if={@action != []} class="relative p-0 pb-4">
               <span class="sr-only"><%= gettext("Actions") %></span>
             </th>
           </tr>
         </thead>
+
         <tbody
           id={@id}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
@@ -508,13 +526,11 @@ defmodule CoPlanHubWeb.CoreComponents do
                 </span>
               </div>
             </td>
+
             <td :if={@action != []} class="relative w-14 p-0">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
                 <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
-                <span
-                  :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6"
-                >
+                <span :for={action <- @action} class="relative ml-4 font-semibold leading-6">
                   <%= render_slot(action, @row_item.(row)) %>
                 </span>
               </div>
@@ -546,6 +562,7 @@ defmodule CoPlanHubWeb.CoreComponents do
       <dl class="-my-4 divide-y divide-zinc-100">
         <div :for={item <- @item} class="flex gap-4 py-4 text-sm leading-6 sm:gap-8">
           <dt class="w-1/4 flex-none"><%= item.title %></dt>
+
           <dd class=""><%= render_slot(item) %></dd>
         </div>
       </dl>
@@ -566,12 +583,8 @@ defmodule CoPlanHubWeb.CoreComponents do
   def back(assigns) do
     ~H"""
     <div class="mt-16">
-      <.link
-        navigate={@navigate}
-        class="text-sm font-semibold leading-6"
-      >
-        <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
-        <%= render_slot(@inner_block) %>
+      <.link navigate={@navigate} class="text-sm font-semibold leading-6">
+        <.icon name="hero-arrow-left-solid" class="h-3 w-3" /> <%= render_slot(@inner_block) %>
       </.link>
     </div>
     """

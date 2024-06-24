@@ -6,30 +6,33 @@ defmodule CoPlanHubWeb.UserSettingsLive do
   def render(assigns) do
     ~H"""
     <.header class="text-center">
-      Account Settings
-      <:subtitle>Manage your account email address and password settings</:subtitle>
+      User Profile
+      <:subtitle>Manage your account information</:subtitle>
     </.header>
 
     <div class="space-y-12 divide-y">
       <div>
-        <.simple_form
-          for={@email_form}
-          id="email_form"
-          phx-submit="update_email"
-          phx-change="validate_email"
-        >
-          <.input field={@email_form[:email]} type="email" label="Email" required />
-          <.input
-            field={@email_form[:current_password]}
-            name="current_password"
-            id="current_password_for_email"
-            type="password"
-            label="Current password"
-            value={@email_form_current_password}
-            required
-          />
+        <.simple_form for={@profile_form} id="profile_form">
+          <div class="flex gap-2 justify-between">
+            <.input field={@profile_form[:first_name]} type="text" label="First Name" required />
+            <.input field={@profile_form[:last_name]} type="text" label="Last Name" required />
+          </div>
+          <.input field={@profile_form[:username]} type="text" label="Username" required />
+          <div class="flex gap-2 justify-between">
+            <.input field={@profile_form[:email]} type="email" label="Email" disabled />
+            <.link phx-click="show_email_modal" class="mt-8 align-middle">
+              <.button class="btn py-3 bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200">
+                <FontAwesome.pen class="h-4 w-4" />
+              </.button>
+            </.link>
+          </div>
           <:actions>
-            <.button phx-disable-with="Changing...">Change Email</.button>
+            <.button
+              phx-disable-with="Updating..."
+              class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
+            >
+              Update
+            </.button>
           </:actions>
         </.simple_form>
       </div>
@@ -65,11 +68,51 @@ defmodule CoPlanHubWeb.UserSettingsLive do
             required
           />
           <:actions>
-            <.button phx-disable-with="Changing...">Change Password</.button>
+            <.button
+              phx-disable-with="Changing..."
+              class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
+            >
+              Change Password
+            </.button>
           </:actions>
         </.simple_form>
       </div>
     </div>
+
+    <.modal :if={@show_email_modal} show id="update-email-modal">
+      <:header>Update Email</:header>
+      <.simple_form
+        for={@email_form}
+        id="email_form"
+        phx-submit="update_email"
+        phx-change="validate_email"
+      >
+        <.input
+          field={@email_form[:email]}
+          id="new_email_for_user"
+          type="email"
+          label="Email"
+          required
+        />
+        <.input
+          field={@email_form[:current_password]}
+          name="current_password"
+          id="current_password_for_email"
+          type="password"
+          label="Current password"
+          value={@email_form_current_password}
+          required
+        />
+        <:actions>
+          <.button
+            phx-disable-with="Changing..."
+            class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
+          >
+            Change Email
+          </.button>
+        </:actions>
+      </.simple_form>
+    </.modal>
     """
   end
 
@@ -90,18 +133,25 @@ defmodule CoPlanHubWeb.UserSettingsLive do
     user = socket.assigns.current_user
     email_changeset = Accounts.change_user_email(user)
     password_changeset = Accounts.change_user_password(user)
+    profile_changeset = Accounts.change_user_profile(user)
 
     socket =
       socket
       |> assign(:current_password, nil)
       |> assign(:email_form_current_password, nil)
       |> assign(:current_email, user.email)
+      |> assign(:profile_form, to_form(profile_changeset))
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:trigger_submit, false)
+      |> assign(:show_email_modal, false)
       |> assign(:page_title, "User Profile")
 
     {:ok, socket}
+  end
+
+  def handle_event("show_email_modal", _params, socket) do
+    {:noreply, assign(socket, show_email_modal: true)}
   end
 
   def handle_event("validate_email", params, socket) do
@@ -129,7 +179,12 @@ defmodule CoPlanHubWeb.UserSettingsLive do
         )
 
         info = "A link to confirm your email change has been sent to the new address."
-        {:noreply, socket |> put_flash(:info, info) |> assign(email_form_current_password: nil)}
+
+        {:noreply,
+         socket
+         |> put_flash(:info, info)
+         |> assign(email_form_current_password: nil)
+         |> assign(show_email_modal: false)}
 
       {:error, changeset} ->
         {:noreply, assign(socket, :email_form, to_form(Map.put(changeset, :action, :insert)))}

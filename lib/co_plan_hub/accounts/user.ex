@@ -99,6 +99,16 @@ defmodule CoPlanHub.Accounts.User do
   end
 
   @doc """
+  A user changeset for changing the username, first name or last name.
+
+  """
+  def profile_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:username, :first_name, :last_name])
+    |> validate_required([:username, :first_name, :last_name])
+  end
+
+  @doc """
   A user changeset for changing the email.
 
   It requires the email to change otherwise an error is added.
