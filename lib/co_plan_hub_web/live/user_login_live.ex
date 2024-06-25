@@ -21,7 +21,7 @@ defmodule CoPlanHubWeb.UserLoginLive do
 
         <:actions>
           <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
-          <.link href={~p"/users/reset_password"} class="text-sm text-slate-900 hover:text-slate-700 dark:text-sky-50 dark:hover:text-sky-300">
+          <.link href={~p"/users/reset_password"} class="text-sm w-full text-right text-slate-900 hover:text-slate-700 dark:text-sky-50 dark:hover:text-sky-300">
             Forgot your password?
           </.link>
         </:actions>

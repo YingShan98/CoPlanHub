@@ -109,6 +109,23 @@ defmodule CoPlanHub.Accounts do
   end
 
   @doc """
+  Updates the user profile.
+  """
+  def update_user_profile(user, attrs) do
+    changeset =
+      user
+      |> User.profile_changeset(attrs)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:user, changeset)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{user: user}} -> {:ok, user}
+      {:error, :user, changeset, _} -> {:error, changeset}
+    end
+  end
+
+  @doc """
   Returns an `%Ecto.Changeset{}` for changing the user email.
 
   ## Examples

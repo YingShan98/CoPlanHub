@@ -5,81 +5,52 @@ defmodule CoPlanHubWeb.UserSettingsLive do
 
   def render(assigns) do
     ~H"""
-    <.header class="text-center">
-      User Profile
-      <:subtitle>Manage your account information</:subtitle>
-    </.header>
+    <div class="mx-auto max-w-md">
+      <.header class="text-center">
+        User Profile
+        <:subtitle>Manage your account information</:subtitle>
+      </.header>
 
-    <div class="space-y-12 divide-y">
-      <div>
-        <.simple_form for={@profile_form} id="profile_form">
-          <div class="flex gap-2 justify-between">
-            <.input field={@profile_form[:first_name]} type="text" label="First Name" required />
-            <.input field={@profile_form[:last_name]} type="text" label="Last Name" required />
-          </div>
-          <.input field={@profile_form[:username]} type="text" label="Username" required />
-          <div class="flex gap-2 justify-between">
-            <.input field={@profile_form[:email]} type="email" label="Email" disabled />
-            <.link phx-click="show_email_modal" class="mt-8 align-middle">
-              <.button class="btn py-3 bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200">
-                <FontAwesome.pen class="h-4 w-4" />
+      <div class="space-y-12 divide-y">
+        <div>
+          <.simple_form
+            for={@profile_form}
+            id="profile_form"
+            phx-change="validate_profile"
+            phx-submit="update_profile"
+          >
+            <div class="flex gap-2 justify-between">
+              <.input field={@profile_form[:first_name]} type="text" label="First Name" required />
+              <.input field={@profile_form[:last_name]} type="text" label="Last Name" required />
+            </div>
+            <.input field={@profile_form[:username]} type="text" label="Username" required />
+            <div class="flex gap-2 justify-between">
+              <.input field={@profile_form[:email]} type="email" label="Email" disabled />
+              <.link phx-click={show_modal("update-email-modal")} class="mt-8 align-middle">
+                <.button class="btn py-3 bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200">
+                  <FontAwesome.pen class="h-4 w-4" />
+                </.button>
+              </.link>
+            </div>
+            <:actions>
+              <.button
+                phx-disable-with="Updating..."
+                class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
+              >
+                Update Profile
               </.button>
-            </.link>
-          </div>
-          <:actions>
-            <.button
-              phx-disable-with="Updating..."
-              class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
-            >
-              Update
-            </.button>
-          </:actions>
-        </.simple_form>
-      </div>
-      <div>
-        <.simple_form
-          for={@password_form}
-          id="password_form"
-          action={~p"/users/log_in?_action=password_updated"}
-          method="post"
-          phx-change="validate_password"
-          phx-submit="update_password"
-          phx-trigger-action={@trigger_submit}
-        >
-          <input
-            name={@password_form[:email].name}
-            type="hidden"
-            id="hidden_user_email"
-            value={@current_email}
-          />
-          <.input field={@password_form[:password]} type="password" label="New password" required />
-          <.input
-            field={@password_form[:password_confirmation]}
-            type="password"
-            label="Confirm new password"
-          />
-          <.input
-            field={@password_form[:current_password]}
-            name="current_password"
-            type="password"
-            label="Current password"
-            id="current_password_for_password"
-            value={@current_password}
-            required
-          />
-          <:actions>
-            <.button
-              phx-disable-with="Changing..."
-              class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
-            >
-              Change Password
-            </.button>
-          </:actions>
-        </.simple_form>
+              <.link phx-click={show_modal("update-password-modal")}>
+                <.button class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200">
+                  Reset Password
+                </.button>
+              </.link>
+            </:actions>
+          </.simple_form>
+        </div>
       </div>
     </div>
 
-    <.modal :if={@show_email_modal} show id="update-email-modal">
+    <.modal id="update-email-modal">
       <:header>Update Email</:header>
       <.simple_form
         for={@email_form}
@@ -109,6 +80,49 @@ defmodule CoPlanHubWeb.UserSettingsLive do
             class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
           >
             Change Email
+          </.button>
+        </:actions>
+      </.simple_form>
+    </.modal>
+
+    <.modal id="update-password-modal">
+      <:header>Update Password</:header>
+      <.simple_form
+        for={@password_form}
+        id="password_form"
+        action={~p"/users/log_in?_action=password_updated"}
+        method="post"
+        phx-change="validate_password"
+        phx-submit="update_password"
+        phx-trigger-action={@trigger_submit}
+      >
+        <input
+          name={@password_form[:email].name}
+          type="hidden"
+          id="hidden_user_email"
+          value={@current_email}
+        />
+        <.input field={@password_form[:password]} type="password" label="New password" required />
+        <.input
+          field={@password_form[:password_confirmation]}
+          type="password"
+          label="Confirm new password"
+        />
+        <.input
+          field={@password_form[:current_password]}
+          name="current_password"
+          type="password"
+          label="Current password"
+          id="current_password_for_password"
+          value={@current_password}
+          required
+        />
+        <:actions>
+          <.button
+            phx-disable-with="Changing..."
+            class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
+          >
+            Change Password
           </.button>
         </:actions>
       </.simple_form>
@@ -144,14 +158,42 @@ defmodule CoPlanHubWeb.UserSettingsLive do
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:trigger_submit, false)
-      |> assign(:show_email_modal, false)
       |> assign(:page_title, "User Profile")
 
     {:ok, socket}
   end
 
-  def handle_event("show_email_modal", _params, socket) do
-    {:noreply, assign(socket, show_email_modal: true)}
+  def handle_event("validate_profile", params, socket) do
+    %{"user" => user_params} = params
+
+    profile_form =
+      socket.assigns.current_user
+      |> Accounts.change_user_profile(user_params)
+      |> Map.put(:action, :validate)
+      |> to_form()
+
+    {:noreply, assign(socket, profile_form: profile_form)}
+  end
+
+  def handle_event("update_profile", params, socket) do
+    %{"user" => user_params} = params
+    user = socket.assigns.current_user
+
+    case Accounts.update_user_profile(user, user_params) do
+      {:ok, user} ->
+        profile_form =
+          user
+          |> Accounts.change_user_profile(user_params)
+          |> to_form()
+
+        {:noreply,
+         socket
+         |> put_flash(:info, "User Profile updated successfully")
+         |> assign(:profile_form, profile_form)}
+
+      {:error, changeset} ->
+        {:noreply, assign(socket, profile_form: to_form(changeset))}
+    end
   end
 
   def handle_event("validate_email", params, socket) do
@@ -184,7 +226,7 @@ defmodule CoPlanHubWeb.UserSettingsLive do
          socket
          |> put_flash(:info, info)
          |> assign(email_form_current_password: nil)
-         |> assign(show_email_modal: false)}
+         |> push_event("close_modal", %{to: "#close_modal_btn_update-email-modal"})}
 
       {:error, changeset} ->
         {:noreply, assign(socket, :email_form, to_form(Map.put(changeset, :action, :insert)))}
@@ -214,7 +256,12 @@ defmodule CoPlanHubWeb.UserSettingsLive do
           |> Accounts.change_user_password(user_params)
           |> to_form()
 
-        {:noreply, assign(socket, trigger_submit: true, password_form: password_form)}
+        {:noreply,
+         socket
+         |> put_flash(:info, "Password reset successfully")
+         |> assign(:trigger_submit, true)
+         |> assign(:password_form, password_form)
+         |> push_event("close_modal", %{to: "#close_modal_btn_update-password-modal"})}
 
       {:error, changeset} ->
         {:noreply, assign(socket, password_form: to_form(changeset))}

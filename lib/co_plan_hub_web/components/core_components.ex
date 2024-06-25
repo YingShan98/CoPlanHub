@@ -74,6 +74,8 @@ defmodule CoPlanHubWeb.CoreComponents do
 
                 <div class="justify-self-end">
                   <button
+                    id={"close_modal_btn_" <> @id}
+                    phx-hook="ModalCloser"
                     phx-click={JS.exec("data-cancel", to: "##{@id}")}
                     type="button"
                     class="-m-3 flex-none p-3 opacity-20 hover:opacity-40 dark:opacity-40 dark:hover:opacity-60"

@@ -106,6 +106,8 @@ defmodule CoPlanHub.Accounts.User do
     user
     |> cast(attrs, [:username, :first_name, :last_name])
     |> validate_required([:username, :first_name, :last_name])
+    |> unsafe_validate_unique(:username, CoPlanHub.Repo)
+    |> unique_constraint(:username)
   end
 
   @doc """
@@ -137,8 +139,7 @@ defmodule CoPlanHub.Accounts.User do
   """
   def password_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:password])
-    |> validate_confirmation(:password, message: "does not match password")
+    |> cast(attrs, [:password, :password_confirmation])
     |> validate_password(opts)
   end
 
