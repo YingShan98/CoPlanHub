@@ -1,11 +1,18 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "./root.css";
 
 /* This file is for your main application CSS */
 html {
-    --text-color: rgb(15 23 42);
-    --text-hover-color: rgb(37 99 235);
+    --primary-color: rgb(92, 158, 173);
+    --secondary-color: rgb(242, 123, 122);
+    --accent-color: rgb(255, 221, 103);
+    --background-color: rgb(230, 242, 245);
+    --header-background-color: rgb(92, 158, 173);
+    --header-secondary-background-color: rgb(173, 216, 230);
+    --text-color: rgb(47, 79, 79);
+    --text-hover-color: rgb(0, 128, 128);
     --button-primary-bg-color: rgb(96 165 250);
     --button-primary-hover-bg-color: rgb(59 130 246);
     --button-primary-text-color: rgb(15 23 42);
@@ -14,14 +21,27 @@ html {
 
 @media (prefers-color-scheme: dark) {
     html {
-        --text-color: rgb(240 249 255);
-        --text-hover-color: rgb(56 189 248);
+        --primary-color: rgb(30, 58, 138);
+        --secondary-color: rgb(59, 130, 246);
+        --accent-color: rgb(16, 185, 129);
+        --background-color: rgb(42, 42, 42);
+        --header-background-color: rgb(30, 30, 30);
+        --header-secondary-background-color: rgb(60, 60, 60);
+        --text-color: rgb(229, 231, 235);
+        --text-hover-color: rgb(112, 128, 144);
         --button-primary-bg-color: rgb(2 132 199);
         --button-primary-hover-bg-color: rgb(3 105 161);
         --button-primary-text-color: rgb(224 242 254);
         --button-primary-hover-text-color: rgb(186 230 253);
     }
 }
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+
 
 a:hover {
     color: var(--text-hover-color);

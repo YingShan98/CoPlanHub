@@ -3,7 +3,7 @@ defmodule CoPlanHubWeb.ItineraryListLive do
 
   def render(assigns) do
     ~H"""
-
+    
     """
   end
 end

@@ -1,0 +1,20 @@
+.title-header {
+    background-color: var(--header-background-color);
+}
+
+#navbar-toggle:hover {
+    background-color: var(--primary-color);
+    scale: 1.1;
+}
+
+#navbar-dropdown {
+    background-color: var(--header-background-color);
+}
+
+#profile-toggle:hover {
+    color: var(--text-hover-color);
+}
+
+#profile-dropdown {
+    background-color: var(--header-secondary-background-color);
+}
