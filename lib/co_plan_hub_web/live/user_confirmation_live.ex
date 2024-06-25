@@ -13,10 +13,7 @@ defmodule CoPlanHubWeb.UserConfirmationLive do
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
         <:actions>
-          <.button
-            phx-disable-with="Activating..."
-            class="w-full bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
-          >
+          <.button phx-disable-with="Activating..." class="w-full btn-primary">
             Activate my account
           </.button>
         </:actions>

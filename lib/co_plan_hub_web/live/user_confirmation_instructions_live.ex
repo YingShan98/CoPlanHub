@@ -14,7 +14,7 @@ defmodule CoPlanHubWeb.UserConfirmationInstructionsLive do
       <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
         <.input field={@form[:email]} type="email" placeholder="Email" required />
         <:actions>
-          <.button phx-disable-with="Sending..." class="w-full bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200">
+          <.button phx-disable-with="Sending..." class="w-full btn-primary">
             Resend activation instructions
           </.button>
         </:actions>
@@ -32,6 +32,7 @@ defmodule CoPlanHubWeb.UserConfirmationInstructionsLive do
     socket =
       socket
       |> assign(:page_title, "User Activation Instruction")
+
     {:ok, assign(socket, form: to_form(%{}, as: "user"))}
   end
 

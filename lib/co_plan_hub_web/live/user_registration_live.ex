@@ -11,7 +11,7 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
         Register for an account
         <:subtitle>
           Already registered?
-          <.link navigate={~p"/users/log_in"} class="font-semibold text-sky-600 hover:underline">
+          <.link navigate={~p"/users/log_in"} class="font-semibold text-sky-500 hover:underline">
             Log in
           </.link>
           to your account now.
@@ -37,12 +37,14 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
          <.input field={@form[:username]} type="text" label="Username" required />
         <.input field={@form[:email]} type="email" label="Email" required />
         <.input field={@form[:password]} type="password" label="Password" required />
-        <.input field={@form[:password_confirmation]} type="password" label="Password Confirmation" required />
+        <.input
+          field={@form[:password_confirmation]}
+          type="password"
+          label="Password Confirmation"
+          required
+        />
         <:actions>
-          <.button
-            phx-disable-with="Creating account..."
-            class="w-full bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
-          >
+          <.button phx-disable-with="Creating account..." class="w-full btn-primary">
             Create an account
           </.button>
         </:actions>

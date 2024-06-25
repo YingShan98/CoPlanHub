@@ -3,6 +3,36 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+html {
+    --text-color: rgb(15 23 42);
+    --text-hover-color: rgb(37 99 235);
+    --button-primary-bg-color: rgb(96 165 250);
+    --button-primary-hover-bg-color: rgb(59 130 246);
+    --button-primary-text-color: rgb(15 23 42);
+    --button-primary-hover-text-color: rgb(15 23 42);
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        --text-color: rgb(240 249 255);
+        --text-hover-color: rgb(56 189 248);
+        --button-primary-bg-color: rgb(2 132 199);
+        --button-primary-hover-bg-color: rgb(3 105 161);
+        --button-primary-text-color: rgb(224 242 254);
+        --button-primary-hover-text-color: rgb(186 230 253);
+    }
+}
+
 a:hover {
-    color: rgb(56 189 248);
+    color: var(--text-hover-color);
+}
+
+.btn-primary {
+    background-color: var(--button-primary-bg-color);
+    color: var(--button-primary-text-color)
+}
+
+.btn-primary:hover {
+    background-color: var(--button-primary-hover-bg-color);
+    color: var(--button-primary-hover-text-color)
 }

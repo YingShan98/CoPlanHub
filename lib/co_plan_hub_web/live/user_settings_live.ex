@@ -33,15 +33,12 @@ defmodule CoPlanHubWeb.UserSettingsLive do
             </div>
 
             <:actions>
-              <.button
-                phx-disable-with="Updating..."
-                class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
-              >
+              <.button phx-disable-with="Updating..." class="btn-primary">
                 Update Profile
               </.button>
 
               <.link phx-click={show_modal("update-password-modal")}>
-                <.button class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200">
+                <.button class="btn-primary">
                   Reset Password
                 </.button>
               </.link>
@@ -76,10 +73,7 @@ defmodule CoPlanHubWeb.UserSettingsLive do
           required
         />
         <:actions>
-          <.button
-            phx-disable-with="Changing..."
-            class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
-          >
+          <.button phx-disable-with="Changing..." class="btn-primary">
             Change Email
           </.button>
         </:actions>
@@ -122,10 +116,7 @@ defmodule CoPlanHubWeb.UserSettingsLive do
           required
         />
         <:actions>
-          <.button
-            phx-disable-with="Changing..."
-            class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
-          >
+          <.button phx-disable-with="Changing..." class="btn-primary">
             Change Password
           </.button>
         </:actions>

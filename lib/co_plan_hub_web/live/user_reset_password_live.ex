@@ -8,11 +8,7 @@ defmodule CoPlanHubWeb.UserResetPasswordLive do
     <div class="mx-auto max-w-sm">
       <.header class="text-center">Reset Password</.header>
 
-      <.simple_form
-        for={@form}
-        id="reset_password_form"
-        phx-submit="reset_password"
-      >
+      <.simple_form for={@form} id="reset_password_form" phx-submit="reset_password">
         <.error :if={@form.errors != []}>
           Oops, something went wrong! Please check the errors below.
         </.error>
@@ -25,7 +21,7 @@ defmodule CoPlanHubWeb.UserResetPasswordLive do
           required
         />
         <:actions>
-          <.button phx-disable-with="Resetting..." class="w-full bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200">Reset Password</.button>
+          <.button phx-disable-with="Resetting..." class="w-full btn-primary">Reset Password</.button>
         </:actions>
       </.simple_form>
 

@@ -8,7 +8,7 @@ defmodule CoPlanHubWeb.UserLoginLive do
         Log in to account
         <:subtitle>
           Don't have an account?
-          <.link navigate={~p"/users/register"} class="font-semibold text-sky-600 hover:underline">
+          <.link navigate={~p"/users/register"} class="font-semibold text-sky-500 hover:underline">
             Sign up
           </.link>
           for an account now.
@@ -22,7 +22,7 @@ defmodule CoPlanHubWeb.UserLoginLive do
           <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
           <.link
             href={~p"/users/reset_password"}
-            class="text-sm w-full text-right text-slate-900 hover:text-slate-700 dark:text-sky-50 dark:hover:text-sky-300"
+            class="text-sm w-full text-right text-slate-900 dark:text-sky-50 dark:hover:text-sky-300"
           >
             Forgot your password?
           </.link>
@@ -31,7 +31,7 @@ defmodule CoPlanHubWeb.UserLoginLive do
         <:actions>
           <.button
             phx-disable-with="Logging in..."
-            class="w-full bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
+            class="w-full bg-blue-400 text-slate-900 hover:bg-blue-500 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
           >
             Log in
           </.button>
@@ -40,7 +40,7 @@ defmodule CoPlanHubWeb.UserLoginLive do
         <:actions>
           <.link
             href={~p"/users/confirm"}
-            class="text-sm w-full text-right text-slate-900 hover:text-slate-700 dark:text-sky-50 dark:hover:text-sky-300"
+            class="text-sm w-full text-right text-slate-900 dark:text-sky-50 dark:hover:text-sky-300"
           >
             Resend activation instruction
           </.link>

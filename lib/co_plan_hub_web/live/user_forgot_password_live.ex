@@ -14,11 +14,12 @@ defmodule CoPlanHubWeb.UserForgotPasswordLive do
       <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
         <.input field={@form[:email]} type="email" placeholder="Email" required />
         <:actions>
-          <.button phx-disable-with="Sending..." class="w-full bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200">
+          <.button phx-disable-with="Sending..." class="w-full btn-primary">
             Send password reset instructions
           </.button>
         </:actions>
       </.simple_form>
+
       <p class="text-center text-sm mt-4 text-sky-500">
         <.link href={~p"/users/register"} class="hover:underline">Register</.link>
         | <.link href={~p"/users/log_in"} class="hover:underline">Log in</.link>
