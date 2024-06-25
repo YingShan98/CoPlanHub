@@ -7,17 +7,22 @@ defmodule CoPlanHubWeb.UserConfirmationLive do
     ~H"""
     <div class="mx-auto max-w-sm">
       <.header class="text-center">
-      Activate Account
-       </.header>
+        Activate Account
+      </.header>
 
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
         <:actions>
-          <.button phx-disable-with="Activating..." class="w-full text-sky-500 hover:underline hover:text-sky-400">Activate my account</.button>
+          <.button
+            phx-disable-with="Activating..."
+            class="w-full bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
+          >
+            Activate my account
+          </.button>
         </:actions>
       </.simple_form>
 
-      <p class="text-center mt-4 text-sky-500">
+      <p class="text-center text-sm mt-4 text-sky-500">
         <.link href={~p"/users/register"} class="hover:underline">Register</.link>
         | <.link href={~p"/users/log_in"} class="hover:underline">Log in</.link>
       </p>
@@ -27,9 +32,11 @@ defmodule CoPlanHubWeb.UserConfirmationLive do
 
   def mount(%{"token" => token}, _session, socket) do
     form = to_form(%{"token" => token}, as: "user")
+
     socket =
       socket
       |> assign(:page_title, "User Activation")
+
     {:ok, assign(socket, form: form), temporary_assigns: [form: nil]}
   end
 
