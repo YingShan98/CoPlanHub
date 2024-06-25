@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
+    <link rel="icon" href={~p"/images/tab_logo.png"} type="image/x-icon" />
     <.live_title>
       <%= assigns[:page_title] || "CoPlanHub" %>
     </.live_title>
@@ -55,7 +56,10 @@
                     <%= @current_user.username %> <FontAwesome.caret_down class="h-4 w-4" />
                   </button>
                   
-                  <div id="profile-dropdown" class="hidden divide-y divide-gray-100 rounded-sm shadow w-full md:w-44 absolute right-0 mt-10 bg-slate-200 dark:bg-slate-900">
+                  <div
+                    id="profile-dropdown"
+                    class="hidden divide-y divide-gray-100 rounded-sm shadow w-full md:w-44 absolute right-0 mt-10 bg-slate-200 dark:bg-slate-900"
+                  >
                     <ul class="py-2 px-4 text-sm">
                       <li class="py-2">
                         <.link href={~p"/users/settings"}>
