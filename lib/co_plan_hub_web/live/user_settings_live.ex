@@ -26,7 +26,7 @@ defmodule CoPlanHubWeb.UserSettingsLive do
             <div class="flex gap-2 justify-between">
               <.input field={@profile_form[:email]} type="email" label="Email" disabled />
               <.link phx-click={show_modal("update-email-modal")} class="mt-8 align-middle">
-                <.button class="btn py-3 bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200">
+                <.button class="btn-primary py-3">
                   <FontAwesome.pen class="h-4 w-4" />
                 </.button>
               </.link>

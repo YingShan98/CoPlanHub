@@ -70,7 +70,7 @@ defmodule CoPlanHubWeb.CoreComponents do
               class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-slate-200 dark:bg-slate-800 p-14 shadow-lg ring-1 transition"
             >
               <div class="flex justify-between gap-2 text-slate-900 dark:text-sky-50">
-                <div><%= render_slot(@header) %></div>
+                <div><h1 class="text-2xl font-bold"><%= render_slot(@header) %></h1></div>
 
                 <div class="justify-self-end">
                   <button
