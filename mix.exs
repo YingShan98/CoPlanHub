@@ -33,7 +33,7 @@ defmodule CoPlanHub.MixProject do
   defp deps do
     [
       {:pbkdf2_elixir, "~> 2.0"},
-      {:phoenix, "~> 1.7.12"},
+      {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
