@@ -13,17 +13,16 @@ defmodule CoPlanHubWeb.UserSettingsLive do
 
       <div class="space-y-12 divide-y">
         <div>
-          <.simple_form
-            for={@profile_form}
-            id="profile_form"
-            phx-change="validate_profile"
-            phx-submit="update_profile"
-          >
+          <.simple_form for={@profile_form} id="profile_form" phx-submit="update_profile">
+            <.error :if={@profile_form.errors != []}>
+              Oops, something went wrong! Please check the errors below.
+            </.error>
+
             <div class="flex gap-2 justify-between">
               <.input field={@profile_form[:first_name]} type="text" label="First Name" required />
               <.input field={@profile_form[:last_name]} type="text" label="Last Name" required />
             </div>
-            <.input field={@profile_form[:username]} type="text" label="Username" required />
+             <.input field={@profile_form[:username]} type="text" label="Username" required />
             <div class="flex gap-2 justify-between">
               <.input field={@profile_form[:email]} type="email" label="Email" disabled />
               <.link phx-click={show_modal("update-email-modal")} class="mt-8 align-middle">
@@ -32,6 +31,7 @@ defmodule CoPlanHubWeb.UserSettingsLive do
                 </.button>
               </.link>
             </div>
+
             <:actions>
               <.button
                 phx-disable-with="Updating..."
@@ -39,6 +39,7 @@ defmodule CoPlanHubWeb.UserSettingsLive do
               >
                 Update Profile
               </.button>
+
               <.link phx-click={show_modal("update-password-modal")}>
                 <.button class="bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200">
                   Reset Password
@@ -52,12 +53,12 @@ defmodule CoPlanHubWeb.UserSettingsLive do
 
     <.modal id="update-email-modal">
       <:header>Update Email</:header>
-      <.simple_form
-        for={@email_form}
-        id="email_form"
-        phx-submit="update_email"
-        phx-change="validate_email"
-      >
+
+      <.simple_form for={@email_form} id="email_form" phx-submit="update_email">
+        <.error :if={@email_form.errors != []}>
+          Oops, something went wrong! Please check the errors below.
+        </.error>
+
         <.input
           field={@email_form[:email]}
           id="new_email_for_user"
@@ -87,22 +88,25 @@ defmodule CoPlanHubWeb.UserSettingsLive do
 
     <.modal id="update-password-modal">
       <:header>Update Password</:header>
+
       <.simple_form
         for={@password_form}
         id="password_form"
         action={~p"/users/log_in?_action=password_updated"}
         method="post"
-        phx-change="validate_password"
         phx-submit="update_password"
         phx-trigger-action={@trigger_submit}
       >
+        <.error :if={@password_form.errors != []}>
+          Oops, something went wrong! Please check the errors below.
+        </.error>
+
         <input
           name={@password_form[:email].name}
           type="hidden"
           id="hidden_user_email"
           value={@current_email}
-        />
-        <.input field={@password_form[:password]} type="password" label="New password" required />
+        /> <.input field={@password_form[:password]} type="password" label="New password" required />
         <.input
           field={@password_form[:password_confirmation]}
           type="password"

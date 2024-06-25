@@ -44,7 +44,7 @@ defmodule CoPlanHubWeb.UserConfirmationInstructionsLive do
     end
 
     info =
-      "If your email is in our system and it has not been confirmed yet, you will receive an email with instructions shortly."
+      "If your email is in our system and it has not been activated yet, you will receive an email with instructions shortly."
 
     {:noreply,
      socket

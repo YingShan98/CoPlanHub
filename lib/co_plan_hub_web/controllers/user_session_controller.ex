@@ -28,7 +28,7 @@ defmodule CoPlanHubWeb.UserSessionController do
     if user = Accounts.get_user_by_email_and_password(email, password) do
       if user.confirmed_at do
         conn
-        |> put_flash(:info, info)
+        |> put_flash(:info, info <> " #{user.first_name} #{user.last_name}")
         |> UserAuth.log_in_user(user, user_params)
       else
         case Map.get(params, "_action") do
@@ -48,7 +48,7 @@ defmodule CoPlanHubWeb.UserSessionController do
 
             conn
             |> put_flash(:error, message)
-            |> redirect(to: "/")
+            |> redirect(to: "/users/log_in")
         end
 
         message =

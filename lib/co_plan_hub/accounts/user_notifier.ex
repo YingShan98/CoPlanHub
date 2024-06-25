@@ -73,7 +73,7 @@ defmodule CoPlanHub.Accounts.UserNotifier do
     </.email_layout>
     """
 
-    deliver(assigns.user.email, "Confirmation instructions", template)
+    deliver(assigns.user.email, "Activation instructions", template)
   end
 
   @doc """

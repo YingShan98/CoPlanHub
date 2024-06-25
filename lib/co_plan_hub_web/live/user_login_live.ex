@@ -18,17 +18,32 @@ defmodule CoPlanHubWeb.UserLoginLive do
       <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
         <.input field={@form[:email]} type="email" label="Email" required />
         <.input field={@form[:password]} type="password" label="Password" required />
-
         <:actions>
           <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
-          <.link href={~p"/users/reset_password"} class="text-sm w-full text-right text-slate-900 hover:text-slate-700 dark:text-sky-50 dark:hover:text-sky-300">
+          <.link
+            href={~p"/users/reset_password"}
+            class="text-sm w-full text-right text-slate-900 hover:text-slate-700 dark:text-sky-50 dark:hover:text-sky-300"
+          >
             Forgot your password?
           </.link>
         </:actions>
+
         <:actions>
-          <.button phx-disable-with="Logging in..." class="w-full bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200">
+          <.button
+            phx-disable-with="Logging in..."
+            class="w-full bg-sky-900 hover:bg-sky-700 dark:bg-sky-600 hover:dark:bg-sky-700 dark:text-sky-100 hover:dark:text-sky-200"
+          >
             Log in
           </.button>
+        </:actions>
+
+        <:actions>
+          <.link
+            href={~p"/users/confirm"}
+            class="text-sm w-full text-right text-slate-900 hover:text-slate-700 dark:text-sky-50 dark:hover:text-sky-300"
+          >
+            Resend activation instruction
+          </.link>
         </:actions>
       </.simple_form>
     </div>
@@ -38,9 +53,11 @@ defmodule CoPlanHubWeb.UserLoginLive do
   def mount(_params, _session, socket) do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
+
     socket =
       socket
       |> assign(:page_title, "Login")
+
     {:ok, assign(socket, form: form), temporary_assigns: [form: form]}
   end
 end
