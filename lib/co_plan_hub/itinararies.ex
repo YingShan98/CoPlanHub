@@ -1,23 +1,23 @@
-defmodule CoPlanHub.Itinararies do
+defmodule CoPlanHub.Itineraries do
   @moduledoc """
-  The Itinararies context.
+  The Itineraries context.
   """
 
   import Ecto.Query, warn: false
   alias CoPlanHub.Repo
 
-  alias CoPlanHub.Itinararies.Itinarary
+  alias CoPlanHub.Itineraries.Itinarary
 
   @doc """
-  Returns the list of itinararies.
+  Returns the list of itineraries.
 
   ## Examples
 
-      iex> list_itinararies()
+      iex> list_itineraries()
       [%Itinarary{}, ...]
 
   """
-  def list_itinararies do
+  def list_itineraries do
     Repo.all(Itinarary)
   end
 

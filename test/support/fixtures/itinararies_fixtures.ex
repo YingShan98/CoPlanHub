@@ -1,7 +1,7 @@
-defmodule CoPlanHub.ItinarariesFixtures do
+defmodule CoPlanHub.ItinerariesFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `CoPlanHub.Itinararies` context.
+  entities via the `CoPlanHub.Itineraries` context.
   """
 
   @doc """
@@ -16,7 +16,7 @@ defmodule CoPlanHub.ItinarariesFixtures do
         name: "some name",
         start_date: ~D[2024-06-24]
       })
-      |> CoPlanHub.Itinararies.create_itinarary()
+      |> CoPlanHub.Itineraries.create_itinarary()
 
     itinarary
   end

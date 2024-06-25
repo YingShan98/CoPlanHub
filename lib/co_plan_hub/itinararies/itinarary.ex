@@ -1,9 +1,9 @@
-defmodule CoPlanHub.Itinararies.Itinarary do
+defmodule CoPlanHub.Itineraries.Itinarary do
   alias CoPlanHub.Accounts.User
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "itinararies" do
+  schema "itineraries" do
     field :name, :string
     field :description, :string
     field :start_date, :date

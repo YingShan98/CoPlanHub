@@ -68,7 +68,8 @@ defmodule CoPlanHubWeb.Router do
       on_mount: [{CoPlanHubWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
-      live "/itinararies", ItinararyListLive, :index
+      live "/itineraries", ItineraryListLive, :index
+      live "/itineraries/new", ItineraryCreateLive, :new
     end
   end
 

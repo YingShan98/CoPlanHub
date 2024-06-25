@@ -1,8 +1,8 @@
-defmodule CoPlanHub.Repo.Migrations.CreateItinararies do
+defmodule CoPlanHub.Repo.Migrations.CreateItineraries do
   use Ecto.Migration
 
   def change do
-    create table(:itinararies) do
+    create table(:itineraries) do
       add :name, :string
       add :description, :text
       add :start_date, :date
@@ -12,6 +12,6 @@ defmodule CoPlanHub.Repo.Migrations.CreateItinararies do
       timestamps(type: :utc_datetime)
     end
 
-    create index(:itinararies, [:user_id, :name, :start_date, :end_date])
+    create index(:itineraries, [:user_id, :name, :start_date, :end_date])
   end
 end
