@@ -5,10 +5,10 @@ defmodule CoPlanHub.ItinerariesFixtures do
   """
 
   @doc """
-  Generate a itinarary.
+  Generate a itinerary.
   """
-  def itinarary_fixture(attrs \\ %{}) do
-    {:ok, itinarary} =
+  def itinerary_fixture(attrs \\ %{}) do
+    {:ok, itinerary} =
       attrs
       |> Enum.into(%{
         description: "some description",
@@ -16,8 +16,8 @@ defmodule CoPlanHub.ItinerariesFixtures do
         name: "some name",
         start_date: ~D[2024-06-24]
       })
-      |> CoPlanHub.Itineraries.create_itinarary()
+      |> CoPlanHub.Itineraries.create_itinerary()
 
-    itinarary
+    itinerary
   end
 end

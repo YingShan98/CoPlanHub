@@ -6,7 +6,7 @@ defmodule CoPlanHub.Itineraries do
   import Ecto.Query, warn: false
   alias CoPlanHub.Repo
 
-  alias CoPlanHub.Itineraries.Itinarary
+  alias CoPlanHub.Itineraries.Itinerary
 
   @doc """
   Returns the list of itineraries.
@@ -14,92 +14,92 @@ defmodule CoPlanHub.Itineraries do
   ## Examples
 
       iex> list_itineraries()
-      [%Itinarary{}, ...]
+      [%Itinerary{}, ...]
 
   """
   def list_itineraries do
-    Repo.all(Itinarary)
+    Repo.all(Itinerary)
   end
 
   @doc """
-  Gets a single itinarary.
+  Gets a single itinerary.
 
-  Raises `Ecto.NoResultsError` if the Itinarary does not exist.
+  Raises `Ecto.NoResultsError` if the Itinerary does not exist.
 
   ## Examples
 
-      iex> get_itinarary!(123)
-      %Itinarary{}
+      iex> get_itinerary!(123)
+      %Itinerary{}
 
-      iex> get_itinarary!(456)
+      iex> get_itinerary!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_itinarary!(id), do: Repo.get!(Itinarary, id)
+  def get_itinerary!(id), do: Repo.get!(Itinerary, id)
 
   @doc """
-  Creates a itinarary.
+  Creates a itinerary.
 
   ## Examples
 
-      iex> create_itinarary(%{field: value})
-      {:ok, %Itinarary{}}
+      iex> create_itinerary(%{field: value})
+      {:ok, %Itinerary{}}
 
-      iex> create_itinarary(%{field: bad_value})
+      iex> create_itinerary(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_itinarary(attrs \\ %{}, user) do
-    Ecto.build_assoc(user, :itinarary)
+  def create_itinerary(attrs \\ %{}, user) do
+    Ecto.build_assoc(user, :itinerary)
     |> Repo.preload(:user)
-    |> Itinarary.changeset(attrs)
+    |> Itinerary.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a itinarary.
+  Updates a itinerary.
 
   ## Examples
 
-      iex> update_itinarary(itinarary, %{field: new_value})
-      {:ok, %Itinarary{}}
+      iex> update_itinerary(itinerary, %{field: new_value})
+      {:ok, %Itinerary{}}
 
-      iex> update_itinarary(itinarary, %{field: bad_value})
+      iex> update_itinerary(itinerary, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_itinarary(%Itinarary{} = itinarary, attrs) do
-    itinarary
-    |> Itinarary.changeset(attrs)
+  def update_itinerary(%Itinerary{} = itinerary, attrs) do
+    itinerary
+    |> Itinerary.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a itinarary.
+  Deletes a itinerary.
 
   ## Examples
 
-      iex> delete_itinarary(itinarary)
-      {:ok, %Itinarary{}}
+      iex> delete_itinerary(itinerary)
+      {:ok, %Itinerary{}}
 
-      iex> delete_itinarary(itinarary)
+      iex> delete_itinerary(itinerary)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_itinarary(%Itinarary{} = itinarary) do
-    Repo.delete(itinarary)
+  def delete_itinerary(%Itinerary{} = itinerary) do
+    Repo.delete(itinerary)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking itinarary changes.
+  Returns an `%Ecto.Changeset{}` for tracking itinerary changes.
 
   ## Examples
 
-      iex> change_itinarary(itinarary)
-      %Ecto.Changeset{data: %Itinarary{}}
+      iex> change_itinerary(itinerary)
+      %Ecto.Changeset{data: %Itinerary{}}
 
   """
-  def change_itinarary(%Itinarary{} = itinarary, attrs \\ %{}) do
-    Itinarary.changeset(itinarary, attrs)
+  def change_itinerary(%Itinerary{} = itinerary, attrs \\ %{}) do
+    Itinerary.changeset(itinerary, attrs)
   end
 end

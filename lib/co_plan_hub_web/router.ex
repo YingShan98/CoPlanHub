@@ -71,6 +71,8 @@ defmodule CoPlanHubWeb.Router do
       live "/itineraries", ItineraryListLive, :index
       live "/itineraries/new", ItineraryCreateLive, :new
     end
+
+    # post "/itineraries/create", ItineraryController, :create
   end
 
   scope "/", CoPlanHubWeb do

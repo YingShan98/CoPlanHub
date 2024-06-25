@@ -1,4 +1,4 @@
-defmodule CoPlanHub.Itineraries.Itinarary do
+defmodule CoPlanHub.Itineraries.Itinerary do
   alias CoPlanHub.Accounts.User
   use Ecto.Schema
   import Ecto.Changeset
@@ -14,8 +14,8 @@ defmodule CoPlanHub.Itineraries.Itinarary do
   end
 
   @doc false
-  def changeset(itinarary, attrs) do
-    itinarary
+  def changeset(itinerary, attrs) do
+    itinerary
     |> cast(attrs, [:name, :description, :start_date, :end_date])
     |> validate_required([:user_id, :name, :description, :start_date, :end_date])
   end
