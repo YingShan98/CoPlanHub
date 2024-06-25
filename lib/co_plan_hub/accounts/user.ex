@@ -1,4 +1,5 @@
 defmodule CoPlanHub.Accounts.User do
+  alias CoPlanHub.Itineraries.Itinerary
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -17,6 +18,8 @@ defmodule CoPlanHub.Accounts.User do
     field :password, :string, virtual: true, redact: true
     field :password_confirmation, :string, virtual: true, redact: true
     field :current_password, :string, virtual: true, redact: true
+
+    has_many :itinerary, Itinerary
   end
 
   @doc """

@@ -287,7 +287,7 @@ defmodule CoPlanHubWeb.CoreComponents do
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
-               range search select tel text textarea time url week)
+               range search select tel text textarea time url week hidden)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -409,6 +409,88 @@ defmodule CoPlanHubWeb.CoreComponents do
     </div>
     """
   end
+
+  @min_date Date.utc_today() |> Date.add(-365)
+  @max_date Date.utc_today() |> Date.add(365)
+
+  attr(:id, :string, required: true)
+  attr(:label, :string, required: true)
+
+  attr(:start_date_field, :any,
+    doc: "a %Phoenix.HTML.Form{}/field name tuple, for example: @form[:start_date]"
+  )
+
+  attr(:end_date_field, :any,
+    doc: "a %Phoenix.HTML.Form{}/field name tuple, for example: @form[:end_date]"
+  )
+
+  attr(:required, :boolean, default: false)
+  attr(:readonly, :boolean, default: false)
+  attr(:min, :any, default: @min_date, doc: "the earliest date that can be set")
+  attr(:max, :any, default: @max_date, doc: "the latest date that can be set")
+  attr(:errors, :list, default: [])
+  attr(:form, :any)
+
+  def date_range_picker(assigns) do
+    ~H"""
+    <.live_component
+      module={CoPlanHubWeb.DateRangePicker}
+      label={@label}
+      id={@id}
+      form={@form}
+      start_date_field={@start_date_field}
+      end_date_field={@end_date_field}
+      required={@required}
+      readonly={@readonly}
+      is_range?
+      min={@min}
+      max={@max}
+    />
+    <div phx-feedback-for={@start_date_field.name}>
+      <.error :for={msg <- @start_date_field.errors}><%= format_form_error(msg) %></.error>
+    </div>
+    <div phx-feedback-for={@end_date_field.name}>
+      <.error :for={msg <- @end_date_field.errors}><%= format_form_error(msg) %></.error>
+    </div>
+    """
+  end
+
+  attr(:id, :string, required: true)
+  attr(:label, :string, required: true)
+
+  attr(:start_date_field, :any,
+    doc: "a %Phoenix.HTML.Form{}/field name tuple, for example: @form[:start_date]"
+  )
+
+  attr(:required, :boolean, default: false)
+  attr(:readonly, :boolean, default: false)
+  attr(:min, :any, default: @min_date, doc: "the earliest date that can be set")
+  attr(:max, :any, default: @max_date, doc: "the latest date that can be set")
+  attr(:errors, :list, default: [])
+  attr(:form, :any)
+
+  def date_picker(assigns) do
+    ~H"""
+    <.live_component
+      module={CoPlanHubWeb.Components.DateRangePicker}
+      label={@label}
+      id={@id}
+      form={@form}
+      start_date_field={@start_date_field}
+      required={@required}
+      readonly={@readonly}
+      is_range?={false}
+      min={@min}
+      max={@max}
+    />
+    <div phx-feedback-for={@start_date_field.name}>
+      <.error :for={msg <- @start_date_field.form.errors}><%= format_form_error(msg) %></.error>
+    </div>
+    """
+  end
+
+  defp format_form_error({_key, {msg, _type}}), do: msg
+  defp format_form_error({msg, _type}), do: msg
 
   @doc """
   Renders a label.

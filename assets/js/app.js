@@ -21,14 +21,8 @@ import "phoenix_html"
 import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
-
-const ModalCloser = {
-  mounted() {
-    this.handleEvent("close_modal", () => {
-      this.el.dispatchEvent(new Event("click", { bubbles: true }));
-    });
-  },
-};
+import DaterangeHover from "./daterange-hover";
+import ModalCloser from "./modal";
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
@@ -36,6 +30,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
   hooks: {
     ModalCloser: ModalCloser,
+    DaterangeHover: DaterangeHover
   },
 })
 
