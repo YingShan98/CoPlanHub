@@ -19,20 +19,36 @@ defmodule CoPlanHubWeb.ItineraryCreateLive do
         </.error>
          <.input field={@form[:name]} type="text" label="Itinerary Name" required />
         <.input field={@form[:description]} type="textarea" label="Description" required />
-        <.date_range_picker
+        <div class="flex w-full gap-4">
+          <.input
+            field={@form[:start_date]}
+            type="date"
+            label="Start Date"
+            required
+          />
+          <.input
+            field={@form[:end_date]}
+            type="date"
+            label="End Date"
+          />
+        </div>
+
+        <%!-- <.date_range_picker
           label="Travel Date Range"
           id="travel_date_range_picker"
           form={@form}
           start_date_field={@form[:start_date]}
           end_date_field={@form[:end_date]}
           required={true}
-        />
+        /> --%>
         <:actions>
           <.button phx-disable-with="Creating itinerary..." class="w-full btn-primary">
             Create Itinerary
           </.button>
         </:actions>
       </.simple_form>
+
+      <.back navigate={~p"/itineraries"}>Return to List</.back>
     </div>
     """
   end
@@ -54,9 +70,8 @@ defmodule CoPlanHubWeb.ItineraryCreateLive do
     user = socket.assigns.current_user
 
     case Itineraries.create_itinerary(itinerary_params, user) do
-      {:ok, itinerary} ->
-        changeset = Itineraries.change_itinerary(itinerary)
-        {:noreply, socket |> assign_form(changeset)}
+      {:ok} ->
+        {:noreply, socket |> redirect(to: ~p"/itineraries")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}

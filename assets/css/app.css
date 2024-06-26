@@ -74,3 +74,16 @@ a:hover {
 .btn-primary:hover {
     background-color: var(--button-primary-hover-bg-color);
 }
+
+#calendar_background {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+#click_today {
+    color: var(--text-color);
+}
+
+#click_today:hover {
+    color: var(--text-hover-color);
+}

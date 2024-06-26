@@ -36,7 +36,7 @@ defmodule CoPlanHubWeb.DateRangePicker do
       >
         <div
           id="calendar_background"
-          class="w-full bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-3"
+          class="w-full rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-3"
         >
           <div id="calendar_header" class="flex justify-between">
             <div id="button_left">
@@ -67,14 +67,14 @@ defmodule CoPlanHubWeb.DateRangePicker do
           </div>
 
           <div id="click_today" class="text-sm text-center">
-            <.link phx-click="today" phx-target={@myself} class="text-gray-700 hover:text-gray-500">
+            <.link phx-click="today" phx-target={@myself}>
               Today
             </.link>
           </div>
 
           <div
             id="calendar_weekdays"
-            class="text-center mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500"
+            class="text-center mt-2 grid grid-cols-7 text-xs leading-6 text-gray-500"
           >
             <div :for={week_day <- List.first(@current.week_rows)}>
               <%= Calendar.strftime(week_day, "%a") %>
@@ -216,10 +216,26 @@ defmodule CoPlanHubWeb.DateRangePicker do
   def handle_event("pick-date", %{"date" => date_str}, socket) do
     date_time = from_str!(date_str)
 
-    if Date.compare(socket.assigns.min, DateTime.to_date(date_time)) == :gt do
+    if Date.compare(socket.assigns.min, DateTime.to_date(date_time)) == :gt || Date.compare(socket.assigns.max, DateTime.to_date(date_time)) == :lt do
       {:noreply, socket}
     else
-      ranges = calculate_date_ranges(socket.assigns.state, date_time)
+      ranges = case socket.assigns.state do
+        :set_start ->
+          calculate_date_ranges(socket.assigns.state, date_time)
+
+        :set_end ->
+          if Date.compare(socket.assigns.range_start, DateTime.to_date(date_time)) != :gt do
+            calculate_date_ranges(socket.assigns.state, date_time)
+          else
+            calculate_date_ranges(:invert, date_time, socket.assigns.range_start)
+          end
+
+        :reset ->
+          calculate_date_ranges(socket.assigns.state, date_time)
+
+        _ ->
+          socket.assigns
+      end
 
       state =
         if socket.assigns.is_range? do
@@ -343,6 +359,13 @@ defmodule CoPlanHubWeb.DateRangePicker do
     }
   end
 
+  defp calculate_date_ranges(:invert, start_date_time, end_date_time) do
+    %{
+      range_start: start_date_time,
+      range_end: end_date_time
+    }
+  end
+
   defp set_field_value(nil, _field, _value), do: nil
 
   defp set_field_value(assigns, field, value) when is_binary(value) do
@@ -386,7 +409,13 @@ defmodule CoPlanHubWeb.DateRangePicker do
   defp selected_range?(day, range_start, range_end) do
     start_date = DateTime.to_date(range_start)
     end_date = DateTime.to_date(range_end)
-    day in Date.range(start_date, end_date)
+
+    if (Date.compare(start_date, end_date) != :gt) do
+      day in Date.range(start_date, end_date)
+    else
+      day in Date.range(end_date, start_date)
+    end
+
   end
 
   defp format_date(date) do
