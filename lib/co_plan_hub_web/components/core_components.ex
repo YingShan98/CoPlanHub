@@ -329,7 +329,7 @@ defmodule CoPlanHubWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 focus:ring-0 bg-white dark:bg-slate-800 disabled:bg-slate-300 bg-white disabled:dark:bg-slate-700"
+          class="rounded border-zinc-300 focus:ring-0"
           {@rest}
         /> <%= @label %>
       </label>
