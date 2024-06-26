@@ -20,7 +20,7 @@ defmodule CoPlanHubWeb.UserForgotPasswordLive do
         </:actions>
       </.simple_form>
 
-      <p class="text-center text-sm mt-4 text-sky-500">
+      <p class="text-center text-sm mt-4 subtitle">
         <.link href={~p"/users/register"} class="hover:underline">Register</.link>
         | <.link href={~p"/users/log_in"} class="hover:underline">Log in</.link>
       </p>

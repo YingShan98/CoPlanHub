@@ -4,35 +4,31 @@
 @import "./root.css";
 
 /* This file is for your main application CSS */
-html {
-    --primary-color: rgb(92, 158, 173);
-    --secondary-color: rgb(242, 123, 122);
-    --accent-color: rgb(255, 221, 103);
+:root {
+    --primary-color: rgb(92, 173, 255);
     --background-color: rgb(230, 242, 245);
-    --header-background-color: rgb(92, 158, 173);
-    --header-secondary-background-color: rgb(173, 216, 230);
-    --text-color: rgb(47, 79, 79);
-    --text-hover-color: rgb(0, 128, 128);
-    --button-primary-bg-color: rgb(96 165 250);
-    --button-primary-hover-bg-color: rgb(59 130 246);
-    --button-primary-text-color: rgb(15 23 42);
-    --button-primary-hover-text-color: rgb(15 23 42);
+    --text-background-color: rgb(255, 255, 255);
+    --header-secondary-background-color: rgb(135, 206, 250);
+    --text-color: rgb(51, 51, 51);
+    --text-hover-color: rgb(0, 102, 204);
+    --subtitle-color: rgb(70, 70, 70);
+    --button-primary-bg-color: rgb(31, 176, 255);
+    --button-primary-hover-bg-color: rgb(137, 207, 240);
+    --logo: url('/images/logo-light.svg');
 }
 
 @media (prefers-color-scheme: dark) {
-    html {
-        --primary-color: rgb(30, 58, 138);
-        --secondary-color: rgb(59, 130, 246);
-        --accent-color: rgb(16, 185, 129);
+    :root {
+        --primary-color: rgb(30, 30, 30);
         --background-color: rgb(42, 42, 42);
-        --header-background-color: rgb(30, 30, 30);
+        --text-background-color: rgb(25, 25, 25);
         --header-secondary-background-color: rgb(60, 60, 60);
         --text-color: rgb(229, 231, 235);
         --text-hover-color: rgb(112, 128, 144);
-        --button-primary-bg-color: rgb(2 132 199);
+        --subtitle-color: rgb(211, 211, 211);
+        --button-primary-bg-color: rgb(2, 132, 199);
         --button-primary-hover-bg-color: rgb(3 105 161);
-        --button-primary-text-color: rgb(224 242 254);
-        --button-primary-hover-text-color: rgb(186 230 253);
+        --logo: url('/images/logo.svg');
     }
 }
 
@@ -41,18 +37,36 @@ body {
     color: var(--text-color);
 }
 
+.subtitle {
+    color: var(--subtitle-color);
+}
 
+.subtitle a {
+    color: rgb(14 165 233);
+}
+
+.subtitle a:hover {
+    color: rgb(0, 102, 204);
+}
 
 a:hover {
     color: var(--text-hover-color);
 }
 
+[type="text"], [type="email"], [type="url"], [type="password"], [type="number"], [type="date"], [type="datetime-local"], [type="month"], [type="search"], [type="tel"], [type="time"], [type="week"], [multiple], textarea, select {
+    color: var(--text-color);
+    background-color: var(--text-background-color);
+}
+
+[type="text"]:disabled, [type="email"]:disabled, [type="url"]:disabled, [type="password"]:disabled, [type="number"]:disabled, [type="date"]:disabled, [type="datetime-local"]:disabled, [type="month"]:disabled, [type="search"]:disabled, [type="tel"]:disabled, [type="time"]:disabled, [type="week"]:disabled, [multiple]:disabled, textarea:disabled, select:disabled {
+    background-color: var(--background-color) !important;
+}
+
 .btn-primary {
     background-color: var(--button-primary-bg-color);
-    color: var(--button-primary-text-color)
+    color: var(--text-color)
 }
 
 .btn-primary:hover {
     background-color: var(--button-primary-hover-bg-color);
-    color: var(--button-primary-hover-text-color)
 }

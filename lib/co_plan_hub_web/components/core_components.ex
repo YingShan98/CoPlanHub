@@ -69,7 +69,7 @@ defmodule CoPlanHubWeb.CoreComponents do
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
               class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-slate-200 dark:bg-slate-800 p-14 shadow-lg ring-1 transition"
             >
-              <div class="flex justify-between gap-2 text-slate-900 dark:text-sky-50">
+              <div class="flex justify-between gap-2">
                 <div><h1 class="text-2xl font-bold"><%= render_slot(@header) %></h1></div>
 
                 <div class="justify-self-end">
@@ -321,7 +321,7 @@ defmodule CoPlanHubWeb.CoreComponents do
 
     ~H"""
     <div phx-feedback-for={@name} class={@width_class}>
-      <label class="flex items-center gap-4 text-sm leading-6 text-slate-900 dark:text-sky-50">
+      <label class="flex items-center gap-4 text-sm leading-6">
         <input type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
@@ -347,7 +347,7 @@ defmodule CoPlanHubWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm bg-white text-slate-900 dark:bg-slate-800 dark:text-sky-50 autofill:dark:!bg-slate-800 autofill:dark:!text-sky-50 disabled:bg-slate-300 bg-white disabled:dark:bg-slate-700"
+        class="mt-2 block w-full rounded-md border border-gray-300 shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
         multiple={@multiple}
         {@rest}
       >
@@ -370,8 +370,6 @@ defmodule CoPlanHubWeb.CoreComponents do
         class={[
           "mt-2 block rounded-lg focus:ring-0 sm:text-sm sm:leading-6",
           "min-h-[6rem] phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
-          "bg-white text-slate-900 dark:bg-slate-800 dark:text-sky-50 autofill:dark:!bg-slate-800 autofill:dark:!text-sky-50",
-          "disabled:bg-slate-300 bg-white disabled:dark:bg-slate-700",
           @class,
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
@@ -397,8 +395,6 @@ defmodule CoPlanHubWeb.CoreComponents do
         class={[
           "mt-2 block rounded-lg focus:ring-0 sm:text-sm sm:leading-6",
           "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
-          "bg-white text-slate-900 dark:bg-slate-800 dark:text-sky-50 autofill:dark:!bg-slate-800 autofill:dark:!text-sky-50",
-          "disabled:bg-slate-300 bg-white disabled:dark:bg-slate-700",
           @class,
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
@@ -500,7 +496,7 @@ defmodule CoPlanHubWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-slate-900 dark:text-sky-50">
+    <label for={@for} class="block text-sm font-semibold leading-6">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -534,11 +530,11 @@ defmodule CoPlanHubWeb.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-bold leading-8 text-slate-900 dark:text-sky-50">
+        <h1 class="text-lg font-bold leading-8">
           <%= render_slot(@inner_block) %>
         </h1>
 
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-200">
+        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 subtitle">
           <%= render_slot(@subtitle) %>
         </p>
       </div>

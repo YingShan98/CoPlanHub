@@ -1,14 +1,20 @@
 .title-header {
-    background-color: var(--header-background-color);
+    background-color: var(--primary-color);
+}
+
+#logo {
+    content: var(--logo);
+    background: no-repeat center / contain;
 }
 
 #navbar-toggle:hover {
-    background-color: var(--primary-color);
+    background-color: var(--header-secondary-background-color);
     scale: 1.1;
 }
 
 #navbar-dropdown {
-    background-color: var(--header-background-color);
+    background-color: var(--primary-color);
+    z-index: 2;
 }
 
 #profile-toggle:hover {

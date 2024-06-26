@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <link rel="icon" href={~p"/images/tab_logo.png"} type="image/x-icon" />
+    <link rel="icon" href={~p"/images/tab_logo.svg"} type="image/x-icon" />
     <.live_title>
       <%= assigns[:page_title] || "CoPlanHub" %>
     </.live_title>
@@ -16,8 +16,8 @@
   <body class="antialiased">
     <.header class="px-4 sm:px-6 lg:px-8 title-header">
       <div class="flex items-center justify-between py-2 text-sm">
-        <.link navigate="/" id="logo">
-          <img src={~p"/images/logo.png"} class="w-52" />
+        <.link navigate="/">
+          <div id="logo" class="w-52" />
         </.link>
         
         <div>
@@ -33,7 +33,7 @@
           </button>
           
           <div
-            class="hidden w-full absolute rounded-lg right-0 p-2 mt-3 md:block md:w-auto md:relative md:mt-0"
+            class="hidden w-full absolute rounded-sm right-0 p-2 mt-2 md:block md:w-auto md:relative md:mt-0"
             id="navbar-dropdown"
           >
             <ul class="flex flex-col items-center gap-4 font-semibold leading-5 md:flex-row md:space-x-4">
@@ -64,7 +64,7 @@
                   
                   <div
                     id="profile-dropdown"
-                    class="hidden divide-y divide-gray-100 rounded-sm shadow w-full md:w-44 absolute right-0 mt-10"
+                    class="hidden divide-y divide-gray-100 rounded-sm shadow w-full md:w-44 absolute right-0 mt-9"
                   >
                     <ul class="py-2 px-4 text-sm text-center">
                       <li class="py-2">
