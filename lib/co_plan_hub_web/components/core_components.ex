@@ -70,7 +70,9 @@ defmodule CoPlanHubWeb.CoreComponents do
               class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-slate-200 dark:bg-slate-800 p-14 shadow-lg ring-1 transition"
             >
               <div class="flex justify-between gap-2">
-                <div><h1 class="text-2xl font-bold"><%= render_slot(@header) %></h1></div>
+                <div>
+                  <h1 class="text-2xl font-bold"><%= render_slot(@header) %></h1>
+                </div>
 
                 <div class="justify-self-end">
                   <button
@@ -205,12 +207,14 @@ defmodule CoPlanHubWeb.CoreComponents do
     include: ~w(autocomplete name rel action enctype method novalidate target multipart),
     doc: "the arbitrary HTML attributes to apply to the form tag"
 
+  attr :class, :string
+
   slot :inner_block, required: true
   slot :actions, doc: "the slot for form actions, such as a submit button"
 
   def simple_form(assigns) do
     ~H"""
-    <.form :let={f} for={@for} as={@as} {@rest}>
+    <.form :let={f} for={@for} class={@class} as={@as} {@rest}>
       <div class="mt-10 space-y-8">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
@@ -445,6 +449,7 @@ defmodule CoPlanHubWeb.CoreComponents do
     <div phx-feedback-for={@start_date_field.name}>
       <.error :for={msg <- @start_date_field.errors}><%= format_form_error(msg) %></.error>
     </div>
+
     <div phx-feedback-for={@end_date_field.name}>
       <.error :for={msg <- @end_date_field.errors}><%= format_form_error(msg) %></.error>
     </div>

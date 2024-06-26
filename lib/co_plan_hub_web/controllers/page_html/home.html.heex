@@ -1,3 +1,19 @@
-<div class="mx-auto max-w-lg">
-  
+<div class="mx-auto max-w-[95%]">
+  <div class="flex justify-center">
+    <.simple_form :let={f} for={@form} id="itinerary_home_form" class="w-full max-w-2xl">
+      <div class="flex w-full gap-4">
+        <.input field={f[:name]} type="text" label="Location" required />
+        <.input field={f[:start_date]} type="date" label="Start Date" required />
+        <.input field={f[:end_date]} type="date" label="End Date" />
+      </div>
+      
+      <:actions>
+        <.link navigate={~p"/itineraries/new"}>
+          <.button class="w-full btn-primary">
+            Start Planning
+          </.button>
+        </.link>
+      </:actions>
+    </.simple_form>
+  </div>
 </div>
