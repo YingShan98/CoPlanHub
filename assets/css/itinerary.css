@@ -1,0 +1,8 @@
+.itinerary-card {
+    background-color: var(--text-background-color);
+    color: var(--text-color);
+}
+
+.itinerary-card .description {
+    color: var(--subtitle-color);
+}

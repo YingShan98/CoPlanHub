@@ -33,14 +33,6 @@ defmodule CoPlanHubWeb.ItineraryCreateLive do
           />
         </div>
 
-        <%!-- <.date_range_picker
-          label="Travel Date Range"
-          id="travel_date_range_picker"
-          form={@form}
-          start_date_field={@form[:start_date]}
-          end_date_field={@form[:end_date]}
-          required={true}
-        /> --%>
         <:actions>
           <.button phx-disable-with="Creating itinerary..." class="w-full btn-primary">
             Create Itinerary
@@ -70,7 +62,7 @@ defmodule CoPlanHubWeb.ItineraryCreateLive do
     user = socket.assigns.current_user
 
     case Itineraries.create_itinerary(itinerary_params, user) do
-      {:ok} ->
+      {:ok, _itinerary} ->
         {:noreply, socket |> redirect(to: ~p"/itineraries")}
 
       {:error, %Ecto.Changeset{} = changeset} ->

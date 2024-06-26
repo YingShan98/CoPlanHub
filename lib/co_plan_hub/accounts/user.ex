@@ -19,7 +19,7 @@ defmodule CoPlanHub.Accounts.User do
     field :password_confirmation, :string, virtual: true, redact: true
     field :current_password, :string, virtual: true, redact: true
 
-    has_many :itinerary, Itinerary
+    has_many :itinerary, Itinerary, on_delete: :delete_all
   end
 
   @doc """

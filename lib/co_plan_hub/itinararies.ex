@@ -22,6 +22,20 @@ defmodule CoPlanHub.Itineraries do
   end
 
   @doc """
+  Gets list of itineraries by user id.
+
+  """
+  def get_itineraries_by_user(user_id) do
+    import Ecto.Query, only: [from: 2]
+
+    query =
+      from i in Itinerary,
+        where: i.user_id == ^user_id
+
+    Repo.all(query)
+  end
+
+  @doc """
   Gets a single itinerary.
 
   Raises `Ecto.NoResultsError` if the Itinerary does not exist.
