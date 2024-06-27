@@ -207,7 +207,7 @@ defmodule CoPlanHubWeb.CoreComponents do
     include: ~w(autocomplete name rel action enctype method novalidate target multipart),
     doc: "the arbitrary HTML attributes to apply to the form tag"
 
-  attr :class, :string
+  attr :class, :string, default: ""
 
   slot :inner_block, required: true
   slot :actions, doc: "the slot for form actions, such as a submit button"

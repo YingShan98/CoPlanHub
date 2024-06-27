@@ -13,10 +13,41 @@ defmodule CoPlanHubWeb.UserSettingsLive do
 
       <div class="space-y-12 divide-y">
         <div>
-          <.simple_form for={@profile_form} id="profile_form" phx-submit="update_profile">
+          <.simple_form
+            for={@profile_form}
+            id="profile_form"
+            phx-submit="update_profile"
+            phx-change="validate_profile"
+          >
             <.error :if={@profile_form.errors != []}>
               Oops, something went wrong! Please check the errors below.
             </.error>
+
+            <.error :if={upload_errors(@uploads.profile_image) != []}>
+              <%= for err <- upload_errors(@uploads.profile_image) do %>
+                <%= error_to_string(err) %>
+              <% end %>
+            </.error>
+
+            <div class="flex justify-center w-full">
+              <figure>
+                <%= if @uploads.profile_image.entries |> Enum.count() > 0 do %>
+                  <%= for entry <- @uploads.profile_image.entries do %>
+                    <.live_img_preview entry={entry} width="75" />
+                  <% end %>
+                <% else %>
+                  <%= if @profile_image_url do %>
+                    <img src={~p"/uploads/" <> @profile_image_url} width="75" />
+                  <% else %>
+                    <img src={~p"/images/default-user-image.svg"} width="75" />
+                  <% end %>
+                <% end %>
+              </figure>
+            </div>
+
+            <div class="flex justify-center w-full">
+              <.live_file_input upload={@uploads.profile_image} />
+            </div>
 
             <div class="flex gap-2 justify-between">
               <.input field={@profile_form[:first_name]} type="text" label="First Name" required />
@@ -153,14 +184,22 @@ defmodule CoPlanHubWeb.UserSettingsLive do
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:trigger_submit, false)
+      |> assign(:uploaded_files, [])
+      |> assign(:profile_image_url, user.profile_image)
+      |> allow_upload(:profile_image,
+        accept: ~w(.jpg .jpeg .png),
+        max_entries: 1
+      )
       |> assign(:page_title, "User Profile")
 
     {:ok, socket}
   end
 
-  def handle_event("validate_profile", params, socket) do
-    %{"user" => user_params} = params
+  def handle_event("upload_image", _params, socket) do
+    {:noreply, socket}
+  end
 
+  def handle_event("validate_profile", %{"user" => user_params}, socket) do
     profile_form =
       socket.assigns.current_user
       |> Accounts.change_user_profile(user_params)
@@ -170,9 +209,35 @@ defmodule CoPlanHubWeb.UserSettingsLive do
     {:noreply, assign(socket, profile_form: profile_form)}
   end
 
-  def handle_event("update_profile", params, socket) do
-    %{"user" => user_params} = params
+  def handle_event("update_profile", %{"user" => user_params}, socket) do
     user = socket.assigns.current_user
+
+    uploaded_files =
+      consume_uploaded_entries(socket, :profile_image, fn %{path: path}, _entry ->
+        dest = Path.join(["priv/static/uploads", Path.basename(path)])
+        # You will need to create `priv/static/uploads` for `File.cp!/2` to work.
+
+        if user.profile_image do
+          filepath = Path.join(["priv/static/uploads", user.profile_image])
+          File.rm!(filepath)
+        end
+
+        File.cp!(path, dest)
+        {:ok, Path.basename(path)}
+      end)
+
+    user_params =
+      case uploaded_files do
+        [profile_image_path | _] ->
+          Map.put(
+            user_params,
+            "profile_image",
+            profile_image_path
+          )
+
+        _ ->
+          user_params
+      end
 
     case Accounts.update_user_profile(user, user_params) do
       {:ok, user} ->
@@ -184,7 +249,9 @@ defmodule CoPlanHubWeb.UserSettingsLive do
         {:noreply,
          socket
          |> put_flash(:info, "User Profile updated successfully")
-         |> assign(:profile_form, profile_form)}
+         |> assign(:profile_form, profile_form)
+         |> assign(:uploaded_files, &(&1 ++ uploaded_files))
+         |> assign(:profile_image_url, user.profile_image)}
 
       {:error, changeset} ->
         {:noreply, assign(socket, profile_form: to_form(changeset))}
@@ -262,4 +329,8 @@ defmodule CoPlanHubWeb.UserSettingsLive do
         {:noreply, assign(socket, password_form: to_form(changeset))}
     end
   end
+
+  defp error_to_string(:too_large), do: "Too large"
+  defp error_to_string(:not_accepted), do: "You have selected an unacceptable file type"
+  defp error_to_string(:too_many_files), do: "You have selected too many files"
 end

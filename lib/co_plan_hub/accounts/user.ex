@@ -107,7 +107,7 @@ defmodule CoPlanHub.Accounts.User do
   """
   def profile_changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :first_name, :last_name])
+    |> cast(attrs, [:username, :first_name, :last_name, :profile_image])
     |> validate_required([:username, :first_name, :last_name])
     |> unsafe_validate_unique(:username, CoPlanHub.Repo)
     |> unique_constraint(:username)
