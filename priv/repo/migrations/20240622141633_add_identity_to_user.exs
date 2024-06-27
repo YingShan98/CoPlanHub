@@ -3,7 +3,7 @@ defmodule CoPlanHub.Repo.Migrations.AddIdentityToUser do
 
   def change do
     alter table(:users) do
-      add :guid, :uuid, null: false, default: fragment("gen_random_uuid()")
+      add :guid, :uuid, null: false
       add :username, :string
       add :first_name, :string
       add :last_name, :string

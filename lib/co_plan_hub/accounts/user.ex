@@ -1,10 +1,12 @@
 defmodule CoPlanHub.Accounts.User do
-  alias CoPlanHub.Itineraries.Itinerary
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias CoPlanHub.Itineraries.Itinerary
+  alias Ecto.UUID
+
   schema "users" do
-    field :guid, Ecto.UUID, autogenerate: true
+    field :guid, Ecto.UUID, autogenerate: true, default: UUID.generate()
     field :email, :string
     field :hashed_password, :string, redact: true
     field :confirmed_at, :utc_datetime
