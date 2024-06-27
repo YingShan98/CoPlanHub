@@ -195,10 +195,6 @@ defmodule CoPlanHubWeb.UserSettingsLive do
     {:ok, socket}
   end
 
-  def handle_event("upload_image", _params, socket) do
-    {:noreply, socket}
-  end
-
   def handle_event("validate_profile", %{"user" => user_params}, socket) do
     profile_form =
       socket.assigns.current_user
@@ -214,17 +210,6 @@ defmodule CoPlanHubWeb.UserSettingsLive do
 
     uploaded_files =
       consume_uploaded_entries(socket, :profile_image, fn %{path: path}, _entry ->
-        # dest = Path.join(["priv/static/uploads", Path.basename(path)])
-        # You will need to create `priv/static/uploads` for `File.cp!/2` to work.
-
-        # if user.profile_image do
-        #   filepath = Path.join(["priv/static/uploads", user.profile_image])
-        #   File.rm!(filepath)
-        # end
-
-        # File.cp!(path, dest)
-        # {:ok, Path.basename(path)}
-
         # Read the file content as binary
         {:ok, file_content} = File.read(path)
 

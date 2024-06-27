@@ -49,7 +49,7 @@ defmodule CoPlanHub.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:first_name, :last_name, :username, :email, :password, :password_confirmation])
+    |> cast(attrs, [:first_name, :last_name, :username, :email, :password, :password_confirmation, :profile_image])
     |> validate_required([:first_name, :last_name, :username])
     |> unsafe_validate_unique(:username, CoPlanHub.Repo)
     |> unique_constraint(:username)

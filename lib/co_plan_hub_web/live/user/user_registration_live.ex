@@ -22,6 +22,7 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
         for={@form}
         id="registration_form"
         phx-submit="save"
+        phx-change="validate"
         phx-trigger-action={@trigger_submit}
         action={~p"/users/log_in?_action=registered"}
         method="post"
@@ -29,6 +30,32 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
         <.error :if={@check_errors}>
           Oops, something went wrong! Please check the errors below.
         </.error>
+
+        <.error :if={upload_errors(@uploads.profile_image) != []}>
+          <%= for err <- upload_errors(@uploads.profile_image) do %>
+            <%= error_to_string(err) %>
+          <% end %>
+        </.error>
+
+        <div class="flex justify-center w-full">
+          <figure>
+            <%= if @uploads.profile_image.entries |> Enum.count() > 0 do %>
+              <%= for entry <- @uploads.profile_image.entries do %>
+                <.live_img_preview entry={entry} width="75" />
+              <% end %>
+            <% else %>
+              <%= if @profile_image_url do %>
+                <img src={"data:image/png;base64," <> Base.encode64(@profile_image_url)} width="75" />
+              <% else %>
+                <img src={~p"/images/default-user-image.svg"} width="75" />
+              <% end %>
+            <% end %>
+          </figure>
+        </div>
+
+        <div class="flex justify-center w-full">
+          <.live_file_input upload={@uploads.profile_image} />
+        </div>
 
         <div class="flex gap-4 justify-between">
           <.input field={@form[:first_name]} type="text" label="First Name" required />
@@ -59,13 +86,44 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
     socket =
       socket
       |> assign(trigger_submit: false, check_errors: false)
+      |> assign(:uploaded_files, [])
+      |> assign(:profile_image_url, nil)
+      |> allow_upload(:profile_image,
+        accept: ~w(.jpg .jpeg .png),
+        max_entries: 1
+      )
       |> assign_form(changeset)
       |> assign(:page_title, "User Registration")
 
     {:ok, socket, temporary_assigns: [form: nil]}
   end
 
+  def handle_event("validate", _params, socket) do
+    {:noreply, socket}
+  end
+
   def handle_event("save", %{"user" => user_params}, socket) do
+    uploaded_files =
+      consume_uploaded_entries(socket, :profile_image, fn %{path: path}, _entry ->
+        # Read the file content as binary
+        {:ok, file_content} = File.read(path)
+
+        {:ok, file_content}
+      end)
+
+    user_params =
+      case uploaded_files do
+        [profile_image_content | _] ->
+          Map.put(
+            user_params,
+            "profile_image",
+            profile_image_content
+          )
+
+        _ ->
+          user_params
+      end
+
     case Accounts.register_user(user_params) do
       {:ok, user} ->
         {:ok, _} =
@@ -75,7 +133,13 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
           )
 
         changeset = Accounts.change_user_registration(user)
-        {:noreply, socket |> assign(trigger_submit: true) |> assign_form(changeset)}
+
+        {:noreply,
+         socket
+         |> assign(trigger_submit: true)
+         |> assign(:uploaded_files, &(&1 ++ uploaded_files))
+         |> assign(:profile_image_url, user.profile_image)
+         |> assign_form(changeset)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
@@ -96,4 +160,8 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
       assign(socket, form: form)
     end
   end
+
+  defp error_to_string(:too_large), do: "Too large"
+  defp error_to_string(:not_accepted), do: "You have selected an unacceptable file type"
+  defp error_to_string(:too_many_files), do: "You have selected too many files"
 end
