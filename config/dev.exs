@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :co_plan_hub, CoPlanHub.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "Ty199113",
   hostname: "localhost",
   database: "co_plan_hub_dev",
   stacktrace: true,
@@ -83,3 +83,7 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+config :sample_app, app_env: :dev
+
+config :sample_app, CoPlanHub.Mailer, adapter: Swoosh.Adapters.Local

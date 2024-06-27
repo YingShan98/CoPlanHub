@@ -104,18 +104,15 @@ if config_env() == :prod do
   # Also, you may need to configure the Swoosh API client of your choice if you
   # are not using SMTP. Here is an example of the configuration:
   #
-  config :co_plan_hub, CoPlanHub.Mailer,
-    adapter: Swoosh.Adapters.Mailjet,
-    # 6642e71c00fef4e54a5983bf1806f236
-    api_key: System.get_env("MAILJET_API_KEY"),
-    # fa945163b8d7729d137cf31336e63181
-    secret: System.get_env("MAILJET_SECRET_KEY")
-
+      config :co_plan_hub, CoPlanHub.Mailer,
+        adapter: Swoosh.Adapters.Mailjet,
+        api_key: System.get_env("MAILJET_API_KEY"), #6642e71c00fef4e54a5983bf1806f236
+        secret: System.get_env("MAILJET_SECRET_KEY") #fa945163b8d7729d137cf31336e63181
   #
   # For this example you need include a HTTP client required by Swoosh API client.
   # Swoosh supports Hackney and Finch out of the box:
   #
-  config :swoosh, :api_client, Swoosh.ApiClient.Finch
+      config :swoosh, :api_client, Swoosh.ApiClient.Finch
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 end

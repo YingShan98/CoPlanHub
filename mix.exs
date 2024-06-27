@@ -19,7 +19,7 @@ defmodule CoPlanHub.MixProject do
   def application do
     [
       mod: {CoPlanHub.Application, []},
-      extra_applications: [:logger, :runtime_tools, :swoosh]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
