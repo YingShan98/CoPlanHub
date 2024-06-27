@@ -73,7 +73,7 @@ defmodule CoPlanHub.Accounts.UserNotifier do
     </.email_layout>
     """
 
-    deliver({assigns.user.name, assigns.user.email}, "Activation instructions", template)
+    deliver({assigns.user.username, assigns.user.email}, "Activation instructions", template)
   end
 
   @doc """
@@ -97,7 +97,7 @@ defmodule CoPlanHub.Accounts.UserNotifier do
     </.email_layout>
     """
 
-    deliver({assigns.user.name, assigns.user.email}, "Reset password instructions", template)
+    deliver({assigns.user.username, assigns.user.email}, "Reset password instructions", template)
   end
 
   @doc """
@@ -121,7 +121,7 @@ defmodule CoPlanHub.Accounts.UserNotifier do
     </.email_layout>
     """
 
-    deliver({assigns.user.name, assigns.user.email}, "Update email instructions", template)
+    deliver({assigns.user.username, assigns.user.email}, "Update email instructions", template)
   end
 
   defp heex_to_html(template) do
