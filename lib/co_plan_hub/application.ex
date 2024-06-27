@@ -13,7 +13,7 @@ defmodule CoPlanHub.Application do
       {DNSCluster, query: Application.get_env(:co_plan_hub, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: CoPlanHub.PubSub},
       # Start the Finch HTTP client for sending emails
-      {Finch, name: CoPlanHub.Finch},
+      {Finch, name: Swoosh.Finch},
       # Start a worker by calling: CoPlanHub.Worker.start_link(arg)
       # {CoPlanHub.Worker, arg},
       # Start to serve requests, typically the last entry
