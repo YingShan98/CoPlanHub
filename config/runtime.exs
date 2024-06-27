@@ -104,7 +104,7 @@ if config_env() == :prod do
   # Also, you may need to configure the Swoosh API client of your choice if you
   # are not using SMTP. Here is an example of the configuration:
   #
-  config :sample_app, SampleApp.Mailer,
+  config :co_plan_hub, CoPlanHub.Mailer,
   adapter: Swoosh.Adapters.Mailjet,
   api_key: System.get_env("MAILJET_API_KEY"), #6642e71c00fef4e54a5983bf1806f236
   secret: System.get_env("MAILJET_SECRET_KEY") #fa945163b8d7729d137cf31336e63181
