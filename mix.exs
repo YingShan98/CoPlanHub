@@ -59,7 +59,8 @@ defmodule CoPlanHub.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
-      {:fontawesome, "~> 0.3"}
+      {:fontawesome, "~> 0.3"},
+      {:phoenix_swoosh, "~> 1.0"},
     ]
   end
 
