@@ -37,7 +37,7 @@ defmodule CoPlanHubWeb.UserSettingsLive do
                   <% end %>
                 <% else %>
                   <%= if @profile_image_url do %>
-                    <img src={~p"/uploads/" <> @profile_image_url} width="75" />
+                    <img src={"data:image/png;base64," <> Base.encode64(@profile_image_url)} width="75" />
                   <% else %>
                     <img src={~p"/images/default-user-image.svg"} width="75" />
                   <% end %>
@@ -214,25 +214,30 @@ defmodule CoPlanHubWeb.UserSettingsLive do
 
     uploaded_files =
       consume_uploaded_entries(socket, :profile_image, fn %{path: path}, _entry ->
-        dest = Path.join(["priv/static/uploads", Path.basename(path)])
+        # dest = Path.join(["priv/static/uploads", Path.basename(path)])
         # You will need to create `priv/static/uploads` for `File.cp!/2` to work.
 
-        if user.profile_image do
-          filepath = Path.join(["priv/static/uploads", user.profile_image])
-          File.rm!(filepath)
-        end
+        # if user.profile_image do
+        #   filepath = Path.join(["priv/static/uploads", user.profile_image])
+        #   File.rm!(filepath)
+        # end
 
-        File.cp!(path, dest)
-        {:ok, Path.basename(path)}
+        # File.cp!(path, dest)
+        # {:ok, Path.basename(path)}
+
+        # Read the file content as binary
+        {:ok, file_content} = File.read(path)
+
+        {:ok, file_content}
       end)
 
     user_params =
       case uploaded_files do
-        [profile_image_path | _] ->
+        [profile_image_content | _] ->
           Map.put(
             user_params,
             "profile_image",
-            profile_image_path
+            profile_image_content
           )
 
         _ ->
