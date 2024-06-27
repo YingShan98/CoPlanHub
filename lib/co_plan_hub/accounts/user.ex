@@ -13,7 +13,7 @@ defmodule CoPlanHub.Accounts.User do
     field :username, :string
     field :first_name, :string
     field :last_name, :string
-    field :profile_image, :string
+    field :profile_image, :binary
 
     timestamps(type: :utc_datetime)
 

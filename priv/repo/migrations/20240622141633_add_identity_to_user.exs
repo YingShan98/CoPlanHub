@@ -7,7 +7,7 @@ defmodule CoPlanHub.Repo.Migrations.AddIdentityToUser do
       add :username, :string
       add :first_name, :string
       add :last_name, :string
-      add :profile_image, :string
+      add :profile_image, :binary
     end
   end
 end
