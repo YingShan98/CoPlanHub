@@ -84,6 +84,6 @@ config :phoenix_live_view,
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
 
-config :sample_app, app_env: :dev
+config :co_plan_hub, app_env: :dev
 
-config :sample_app, CoPlanHub.Mailer, adapter: Swoosh.Adapters.Local
+config :co_plan_hub, CoPlanHub.Mailer, adapter: Swoosh.Adapters.Local
