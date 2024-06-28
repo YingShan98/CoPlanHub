@@ -10,6 +10,8 @@ defmodule CoPlanHub.Itineraries.Itinerary do
     field :description, :string
     field :start_date, :date
     field :end_date, :date
+    field :location, :string
+    field :budget, :decimal
     belongs_to :user, User
 
     timestamps(type: :utc_datetime)
@@ -18,8 +20,8 @@ defmodule CoPlanHub.Itineraries.Itinerary do
   @doc false
   def changeset(itinerary, attrs) do
     itinerary
-    |> cast(attrs, [:guid, :name, :description, :start_date, :end_date])
-    |> validate_required([:user_id, :name, :description, :start_date])
+    |> cast(attrs, [:guid, :name, :description, :start_date, :end_date, :location, :budget])
+    |> validate_required([:user_id, :name, :description, :start_date, :location])
     |> validate_date_range()
   end
 
