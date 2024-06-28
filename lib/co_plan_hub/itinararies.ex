@@ -26,13 +26,10 @@ defmodule CoPlanHub.Itineraries do
 
   """
   def get_itineraries_by_user(user_id) do
-    import Ecto.Query, only: [from: 2]
-
-    query =
-      from i in Itinerary,
-        where: i.user_id == ^user_id
-
-    Repo.all(query)
+    Itinerary
+    |> where(user_id: ^user_id)
+    |> order_by(asc: :start_date) # Order by start_date in ascending order
+    |> Repo.all()
   end
 
   @doc """
@@ -50,6 +47,18 @@ defmodule CoPlanHub.Itineraries do
 
   """
   def get_itinerary!(id), do: Repo.get!(Itinerary, id)
+
+
+  @doc """
+  Gets a single itinerary by guid.
+
+  Raises `Ecto.NoResultsError` if the Itinerary does not exist.
+
+
+  """
+  def get_itinerary_by_guid!(guid) do
+    Repo.get_by!(Itinerary, guid: guid)
+  end
 
   @doc """
   Creates a itinerary.

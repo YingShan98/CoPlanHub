@@ -107,10 +107,6 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
     {:ok, socket, temporary_assigns: [form: nil]}
   end
 
-  def handle_event("validate", _params, socket) do
-    {:noreply, socket}
-  end
-
   def handle_event("save", %{"user" => user_params}, socket) do
     uploaded_files =
       consume_uploaded_entries(socket, :profile_image, fn %{path: path}, _entry ->

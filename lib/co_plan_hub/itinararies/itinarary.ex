@@ -1,9 +1,11 @@
 defmodule CoPlanHub.Itineraries.Itinerary do
-  alias CoPlanHub.Accounts.User
   use Ecto.Schema
   import Ecto.Changeset
+  alias Ecto.UUID
+  alias CoPlanHub.Accounts.User
 
   schema "itineraries" do
+    field :guid, Ecto.UUID, autogenerate: true, default: UUID.generate()
     field :name, :string
     field :description, :string
     field :start_date, :date
@@ -16,7 +18,7 @@ defmodule CoPlanHub.Itineraries.Itinerary do
   @doc false
   def changeset(itinerary, attrs) do
     itinerary
-    |> cast(attrs, [:name, :description, :start_date, :end_date])
+    |> cast(attrs, [:guid, :name, :description, :start_date, :end_date])
     |> validate_required([:user_id, :name, :description, :start_date])
     |> validate_date_range()
   end

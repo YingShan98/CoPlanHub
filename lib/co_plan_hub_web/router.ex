@@ -70,7 +70,7 @@ defmodule CoPlanHubWeb.Router do
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
       live "/itineraries", ItineraryListLive, :index
       live "/itineraries/new", ItineraryCreateLive, :new
-      live "/itineraries/:id/edit", ItineraryEditLive, :show
+      live "/itineraries/:guid/edit", ItineraryEditLive, :show
     end
 
     # post "/itineraries/create", ItineraryController, :create

@@ -7,16 +7,24 @@ defmodule CoPlanHubWeb.ItineraryComponent do
       <div>
         <div class="text-xl font-bold"><%= @itinerary.name %></div>
 
-        <p class="description"><%= @itinerary.description %></p>
+        <p class="description">
+          <%= raw(
+            @itinerary.description
+            |> Phoenix.HTML.html_escape()
+            |> Phoenix.HTML.safe_to_string()
+            |> String.replace("\n", "<br>")
+          ) %>
+        </p>
 
         <div class="text-sm description mt-2">
           <p><strong>Travel Date</strong></p>
+
           <p><%= @itinerary.start_date %> - <%= @itinerary.end_date %></p>
         </div>
       </div>
 
       <div class="mt-2 pt-2 text-right">
-        <.link navigate={~p"/itineraries/#{@itinerary.id}/edit"}>
+        <.link navigate={~p"/itineraries/#{@itinerary.guid}/edit"}>
           <.button class="w-1/5 btn-primary">
             Edit
           </.button>
