@@ -33,16 +33,23 @@ defmodule CoPlanHubWeb.UserSettingsLive do
               <figure class="w-1/2 flex justify-center">
                 <%= if @uploads.profile_image.entries |> Enum.count() > 0 do %>
                   <%= for entry <- @uploads.profile_image.entries do %>
-                    <.live_img_preview entry={entry} width="75" height="75" />
+                    <.live_img_preview entry={entry} width="75" height="75" class="rounded-full" />
                   <% end %>
                 <% else %>
                   <%= if @profile_image_url do %>
                     <img
                       src={"data:image/png;base64," <> Base.encode64(@profile_image_url)}
-                      width="75" height="75"
+                      width="75"
+                      height="75"
+                      class="rounded-full"
                     />
                   <% else %>
-                    <img src={~p"/images/default-user-image.svg"} width="75" height="75" />
+                    <img
+                      src={~p"/images/default-user-image.svg"}
+                      width="75"
+                      height="75"
+                      class="rounded-full"
+                    />
                   <% end %>
                 <% end %>
               </figure>

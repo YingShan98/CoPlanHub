@@ -59,7 +59,22 @@
                     aria-controls="profile-dropdown"
                     aria-expanded="false"
                   >
-                    <%= @current_user.username %> <FontAwesome.caret_down class="h-4 w-4" />
+                    <%= if @current_user.profile_image do %>
+                      <img
+                        src={"data:image/png;base64," <> Base.encode64(@current_user.profile_image)}
+                        width="30"
+                        height="30"
+                        class="rounded-full"
+                      />
+                    <% else %>
+                      <img
+                        src={~p"/images/default-user-image.svg"}
+                        width="30"
+                        height="30"
+                        class="rounded-full"
+                      />
+                    <% end %>
+                     <%= @current_user.username %> <FontAwesome.caret_down class="h-4 w-4" />
                   </button>
                   
                   <div

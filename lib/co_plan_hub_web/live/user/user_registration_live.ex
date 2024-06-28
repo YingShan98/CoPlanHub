@@ -38,33 +38,40 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
         </.error>
 
         <div class="flex justify-between items-center gap-4 w-full">
-              <figure class="w-1/2 flex justify-center">
-                <%= if @uploads.profile_image.entries |> Enum.count() > 0 do %>
-                  <%= for entry <- @uploads.profile_image.entries do %>
-                    <.live_img_preview entry={entry} width="75" height="75" />
-                  <% end %>
-                <% else %>
-                  <%= if @profile_image_url do %>
-                    <img
-                      src={"data:image/png;base64," <> Base.encode64(@profile_image_url)}
-                      width="75" height="75"
-                    />
-                  <% else %>
-                    <img src={~p"/images/default-user-image.svg"} width="75" height="75" />
-                  <% end %>
-                <% end %>
-              </figure>
+          <figure class="w-1/2 flex justify-center">
+            <%= if @uploads.profile_image.entries |> Enum.count() > 0 do %>
+              <%= for entry <- @uploads.profile_image.entries do %>
+                <.live_img_preview entry={entry} width="75" height="75" class="rounded-full" />
+              <% end %>
+            <% else %>
+              <%= if @profile_image_url do %>
+                <img
+                  src={"data:image/png;base64," <> Base.encode64(@profile_image_url)}
+                  width="75"
+                  height="75"
+                  class="rounded-full"
+                />
+              <% else %>
+                <img
+                  src={~p"/images/default-user-image.svg"}
+                  width="75"
+                  height="75"
+                  class="rounded-full"
+                />
+              <% end %>
+            <% end %>
+          </figure>
 
-              <div class="w-1/2 flex justify-start">
-                <.label
-                  for={@uploads.profile_image.ref}
-                  class="rounded-lg py-2 px-3 btn-primary cursor-pointer"
-                >
-                  Upload
-                </.label>
-                 <.live_file_input upload={@uploads.profile_image} class="hidden" />
-              </div>
-            </div>
+          <div class="w-1/2 flex justify-start">
+            <.label
+              for={@uploads.profile_image.ref}
+              class="rounded-lg py-2 px-3 btn-primary cursor-pointer"
+            >
+              Upload
+            </.label>
+             <.live_file_input upload={@uploads.profile_image} class="hidden" />
+          </div>
+        </div>
 
         <div class="flex gap-4 justify-between">
           <.input field={@form[:first_name]} type="text" label="First Name" required />
