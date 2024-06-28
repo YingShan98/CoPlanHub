@@ -3,8 +3,8 @@ defmodule CoPlanHubWeb.ItineraryComponent do
 
   def render(assigns) do
     ~H"""
-    <div class="itinerary-card p-4 w-full md:w-[48%] lg:w-[31%] xl:w-[23%] 2xl:w-[18%] rounded-xl shadow-md divide-y">
-      <div>
+    <div class="itinerary-card p-4 w-full md:w-[48%] lg:w-[31%] xl:w-[23%] 2xl:w-[18%] rounded-xl shadow-md space-y-4 flex flex-wrap divide-y">
+      <div class="w-full">
         <div class="text-xl font-bold"><%= @itinerary.name %></div>
 
         <p class="description">
@@ -23,7 +23,7 @@ defmodule CoPlanHubWeb.ItineraryComponent do
         </div>
       </div>
 
-      <div class="mt-2 pt-2 text-right">
+      <div class="pt-2 text-right w-full self-end">
         <.link navigate={~p"/itineraries/#{@itinerary.guid}/edit"}>
           <.button class="w-1/5 btn-primary">
             Edit

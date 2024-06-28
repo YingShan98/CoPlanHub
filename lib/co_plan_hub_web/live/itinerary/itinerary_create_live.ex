@@ -62,8 +62,9 @@ defmodule CoPlanHubWeb.ItineraryCreateLive do
     user = socket.assigns.current_user
 
     case Itineraries.create_itinerary(itinerary_params, user) do
+
       {:ok, _itinerary} ->
-        {:noreply, socket |> redirect(to: ~p"/itineraries")}
+        {:noreply, socket |> put_flash(:info, "Itinerary created successfully") |> redirect(to: ~p"/itineraries")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}

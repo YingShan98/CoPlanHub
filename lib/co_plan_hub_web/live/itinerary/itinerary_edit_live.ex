@@ -73,7 +73,5 @@ defmodule CoPlanHubWeb.ItineraryEditLive do
          |> assign(check_errors: true)
          |> assign(:form, to_form(changeset, as: "itinerary"))}
     end
-
-    {:noreply, socket}
   end
 end
