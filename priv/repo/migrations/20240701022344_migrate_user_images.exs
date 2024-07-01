@@ -15,7 +15,7 @@ defmodule CoPlanHub.Repo.Migrations.MigrateUserImages do
         |> case do
           %Image{id: image_id} ->
             from(u in User, where: u.id == ^user_id)
-            |> Repo.update_all(set: [image_id: image_id])
+            |> Repo.update_all(set: [image_id: image_id, profile_image: nil ])
         end
       end)
     end)

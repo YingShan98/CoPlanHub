@@ -2,7 +2,6 @@ defmodule CoPlanHubWeb.UserSettingsLive do
   use CoPlanHubWeb, :live_view
 
   alias CoPlanHub.Accounts
-  alias CoPlanHub.Attachments.Image
 
   def render(assigns) do
     ~H"""
@@ -226,60 +225,65 @@ defmodule CoPlanHubWeb.UserSettingsLive do
     user = socket.assigns.current_user
 
     uploaded_files =
-      consume_uploaded_entries(socket, :profile_image, fn %{path: path},
-                                                          entry ->
+      consume_uploaded_entries(socket, :profile_image, fn %{path: path}, entry ->
         # Read the file content as binary
         {:ok, file_content} = File.read(path)
 
         {:ok, %{filename: entry.client_name, file_content: file_content}}
       end)
 
-
-    # Insert the uploaded image into the images table
-    image_id =
+    image_params =
       case uploaded_files do
         [%{filename: filename, file_content: profile_image_content} | _] ->
-          # Create a changeset for the image
-          image_changeset =
-            Image.changeset(%Image{}, %{
-              filename: filename,
-              description: "User #{user_params["username"]}'s profile image",
-              bytes: profile_image_content
-            })
-
-          # Insert the image and get the image ID
-          case CoPlanHub.Repo.insert(image_changeset) do
-            {:ok, image} -> image.id
-            {:error, _changeset} -> nil
-          end
+          %{
+            filename: filename,
+            description: "User #{user_params["username"]}'s profile image",
+            bytes: profile_image_content
+          }
 
         _ ->
-          nil
+          # Default or no image params
+          %{}
       end
 
-    user_params =
-      if image_id do
-        Map.put(user_params, "image", image_id)
+    # Create or update image changeset
+    image_changeset =
+      if user.image do
+        CoPlanHub.Attachments.Image.changeset(user.image, image_params)
       else
-        user_params
+        CoPlanHub.Attachments.Image.changeset(%CoPlanHub.Attachments.Image{}, image_params)
       end
 
-    case Accounts.update_user_profile(user, user_params) do
-      {:ok, user} ->
-        profile_form =
-          user
-          |> Accounts.change_user_profile(user_params)
-          |> to_form()
+    case CoPlanHub.Repo.insert_or_update(image_changeset) do
+      {:ok, image} ->
+        user_params = Map.put(user_params, "image_id", image.id)
 
-        {:noreply,
-         socket
-         |> put_flash(:info, "User Profile updated successfully")
-         |> assign(:profile_form, profile_form)
-         |> assign(:uploaded_files, &(&1 ++ uploaded_files))
-         |> assign(:profile_image_url, if(user.image, do: user.image.bytes))}
+        case Accounts.update_user_profile(user, user_params) do
+          {:ok, updated_user} ->
+            # Reload the updated user with associated image data
+            updated_user_with_image = Accounts.get_user!(updated_user.id)
 
-      {:error, changeset} ->
-        {:noreply, assign(socket, profile_form: to_form(changeset))}
+            profile_form =
+              updated_user_with_image
+              |> Accounts.change_user_profile(user_params)
+              |> to_form()
+
+            {:noreply,
+             socket
+             |> put_flash(:info, "User Profile updated successfully")
+             |> assign(:profile_form, profile_form)
+             |> assign(:uploaded_files, uploaded_files)
+             |> assign(
+               :profile_image_url,
+               if(updated_user_with_image.image, do: updated_user_with_image.image.bytes)
+             )}
+
+          {:error, changeset} ->
+            {:noreply, assign(socket, profile_form: to_form(changeset))}
+        end
+
+      {:error, _changeset} ->
+        {:noreply, socket}
     end
   end
 

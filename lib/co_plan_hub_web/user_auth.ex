@@ -4,7 +4,6 @@ defmodule CoPlanHubWeb.UserAuth do
   import Plug.Conn
   import Phoenix.Controller
 
-  alias CoPlanHub.Repo
   alias CoPlanHub.Accounts
 
   # Make the remember me cookie valid for 60 days.

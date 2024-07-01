@@ -117,12 +117,11 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
 
   def handle_event("save", %{"user" => user_params}, socket) do
     uploaded_files =
-      consume_uploaded_entries(socket, :profile_image, fn %{path: path, client_name: filename},
-                                                          _entry ->
+      consume_uploaded_entries(socket, :profile_image, fn %{path: path}, entry ->
         # Read the file content as binary
         {:ok, file_content} = File.read(path)
 
-        {:ok, %{filename: filename, file_content: file_content}}
+        {:ok, %{filename: entry.client_name, file_content: file_content}}
       end)
 
     # Insert the uploaded image into the images table
@@ -133,7 +132,7 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
           image_changeset =
             Image.changeset(%Image{}, %{
               filename: filename,
-              description: "User #{user_params.username}'s profile image",
+              description: "User #{user_params["username"]}'s profile image",
               bytes: profile_image_content
             })
 
@@ -162,13 +161,18 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
             &url(~p"/users/confirm/#{&1}")
           )
 
-        changeset = Accounts.change_user_registration(user)
+        # Reload the updated user with associated image data
+        created_user_with_image = Accounts.get_user!(user.id)
+        changeset = Accounts.change_user_registration(created_user_with_image)
 
         {:noreply,
          socket
          |> assign(trigger_submit: true)
          |> assign(:uploaded_files, &(&1 ++ uploaded_files))
-         |> assign(:profile_image_url, if(user.image, do: user.image.bytes))
+         |> assign(
+           :profile_image_url,
+           if(created_user_with_image.image, do: created_user_with_image.image.bytes)
+         )
          |> assign_form(changeset)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
