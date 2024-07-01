@@ -3,6 +3,7 @@ defmodule CoPlanHub.Itineraries.Itinerary do
   import Ecto.Changeset
   alias Ecto.UUID
   alias CoPlanHub.Accounts.User
+  alias CoPlanHub.Attachments.Image
 
   schema "itineraries" do
     field :guid, Ecto.UUID, autogenerate: true, default: UUID.generate()
@@ -13,6 +14,7 @@ defmodule CoPlanHub.Itineraries.Itinerary do
     field :location, :string
     field :budget, :decimal
     belongs_to :user, User
+    belongs_to :image, Image
 
     timestamps(type: :utc_datetime)
   end
@@ -21,7 +23,9 @@ defmodule CoPlanHub.Itineraries.Itinerary do
   def changeset(itinerary, attrs) do
     itinerary
     |> cast(attrs, [:guid, :name, :description, :start_date, :end_date, :location, :budget])
+    |> cast_assoc(:image)
     |> validate_required([:user_id, :name, :description, :start_date, :location])
+    |> assoc_constraint(:image)
     |> validate_date_range()
   end
 

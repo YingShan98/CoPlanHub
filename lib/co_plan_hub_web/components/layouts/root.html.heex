@@ -59,9 +59,9 @@
                     aria-controls="profile-dropdown"
                     aria-expanded="false"
                   >
-                    <%= if @current_user.profile_image do %>
+                    <%= if @current_user.image do %>
                       <img
-                        src={"data:image/png;base64," <> Base.encode64(@current_user.profile_image)}
+                        src={"data:image/png;base64," <> Base.encode64(@current_user.image.bytes)}
                         width="30"
                         height="30"
                         class="rounded-full"

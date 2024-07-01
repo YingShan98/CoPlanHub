@@ -13,7 +13,8 @@ defmodule CoPlanHub.Accounts.User do
     field :username, :string
     field :first_name, :string
     field :last_name, :string
-    field :profile_image, :binary
+    # field :profile_image, :binary
+    belongs_to :image, CoPlanHub.Attachments.Image
 
     timestamps(type: :utc_datetime)
 
@@ -49,8 +50,10 @@ defmodule CoPlanHub.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:first_name, :last_name, :username, :email, :password, :password_confirmation, :profile_image])
+    |> cast(attrs, [:first_name, :last_name, :username, :email, :password, :password_confirmation])
+    |> cast_assoc(:image)
     |> validate_required([:first_name, :last_name, :username])
+    |> assoc_constraint(:image)
     |> unsafe_validate_unique(:username, CoPlanHub.Repo)
     |> unique_constraint(:username)
     |> validate_email(opts)
@@ -109,8 +112,10 @@ defmodule CoPlanHub.Accounts.User do
   """
   def profile_changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :first_name, :last_name, :profile_image])
+    |> cast(attrs, [:username, :first_name, :last_name])
+    |> cast_assoc(:image)
     |> validate_required([:username, :first_name, :last_name])
+    |> assoc_constraint(:image)
     |> unsafe_validate_unique(:username, CoPlanHub.Repo)
     |> unique_constraint(:username)
   end

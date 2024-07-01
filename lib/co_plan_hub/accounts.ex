@@ -58,7 +58,10 @@ defmodule CoPlanHub.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+    Repo.get!(User, id)
+    |> Repo.preload(:image)
+  end
 
   ## User registration
 
@@ -201,7 +204,11 @@ defmodule CoPlanHub.Accounts do
     {encoded_token, user_token} = UserToken.build_email_token(user, "change:#{current_email}")
 
     Repo.insert!(user_token)
-    UserNotifier.deliver_update_email_instructions(%{user: user, url: update_email_url_fun.(encoded_token)})
+
+    UserNotifier.deliver_update_email_instructions(%{
+      user: user,
+      url: update_email_url_fun.(encoded_token)
+    })
   end
 
   @doc """
@@ -261,7 +268,7 @@ defmodule CoPlanHub.Accounts do
   """
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
-    Repo.one(query)
+    Repo.one(query) |> Repo.preload(:image)
   end
 
   @doc """
@@ -293,7 +300,11 @@ defmodule CoPlanHub.Accounts do
     else
       {encoded_token, user_token} = UserToken.build_email_token(user, "confirm")
       Repo.insert!(user_token)
-      UserNotifier.deliver_confirmation_instructions(%{user: user, url: confirmation_url_fun.(encoded_token)})
+
+      UserNotifier.deliver_confirmation_instructions(%{
+        user: user,
+        url: confirmation_url_fun.(encoded_token)
+      })
     end
   end
 
@@ -334,7 +345,11 @@ defmodule CoPlanHub.Accounts do
       when is_function(reset_password_url_fun, 1) do
     {encoded_token, user_token} = UserToken.build_email_token(user, "reset_password")
     Repo.insert!(user_token)
-    UserNotifier.deliver_reset_password_instructions(%{user: user, url: reset_password_url_fun.(encoded_token)})
+
+    UserNotifier.deliver_reset_password_instructions(%{
+      user: user,
+      url: reset_password_url_fun.(encoded_token)
+    })
   end
 
   @doc """

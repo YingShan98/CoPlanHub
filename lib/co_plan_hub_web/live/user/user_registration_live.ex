@@ -3,6 +3,7 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
 
   alias CoPlanHub.Accounts
   alias CoPlanHub.Accounts.User
+  alias CoPlanHub.Attachments.Image
 
   def render(assigns) do
     ~H"""
@@ -116,24 +117,41 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
 
   def handle_event("save", %{"user" => user_params}, socket) do
     uploaded_files =
-      consume_uploaded_entries(socket, :profile_image, fn %{path: path}, _entry ->
+      consume_uploaded_entries(socket, :profile_image, fn %{path: path, client_name: filename},
+                                                          _entry ->
         # Read the file content as binary
         {:ok, file_content} = File.read(path)
 
-        {:ok, file_content}
+        {:ok, %{filename: filename, file_content: file_content}}
       end)
 
-    user_params =
+    # Insert the uploaded image into the images table
+    image_id =
       case uploaded_files do
-        [profile_image_content | _] ->
-          Map.put(
-            user_params,
-            "profile_image",
-            profile_image_content
-          )
+        [%{filename: filename, file_content: profile_image_content} | _] ->
+          # Create a changeset for the image
+          image_changeset =
+            Image.changeset(%Image{}, %{
+              filename: filename,
+              description: "User #{user_params.username}'s profile image",
+              bytes: profile_image_content
+            })
+
+          # Insert the image and get the image ID
+          case CoPlanHub.Repo.insert(image_changeset) do
+            {:ok, image} -> image.id
+            {:error, _changeset} -> nil
+          end
 
         _ ->
-          user_params
+          nil
+      end
+
+    user_params =
+      if image_id do
+        Map.put(user_params, "image_id", image_id)
+      else
+        user_params
       end
 
     case Accounts.register_user(user_params) do
@@ -150,7 +168,7 @@ defmodule CoPlanHubWeb.UserRegistrationLive do
          socket
          |> assign(trigger_submit: true)
          |> assign(:uploaded_files, &(&1 ++ uploaded_files))
-         |> assign(:profile_image_url, user.profile_image)
+         |> assign(:profile_image_url, if(user.image, do: user.image.bytes))
          |> assign_form(changeset)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
